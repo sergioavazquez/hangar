@@ -2,7 +2,7 @@ const mongoose 			= require('mongoose');
 const bcrypt 			= require('bcrypt');
 const bcrypt_p 			= require('bcrypt-promise');
 const jwt           	= require('jsonwebtoken');
-const Company           = require('./company.model');
+const Note              = require('./note.model');
 const validate          = require('mongoose-validator');
 const {TE, to}          = require('../services/util.service');
 const CONFIG            = require('../config/config');
@@ -27,12 +27,14 @@ let UserSchema = mongoose.Schema({
 
 }, {timestamps: true});
 
-UserSchema.virtual('companies', {
-    ref: 'Company',
+UserSchema.virtual('notes', {
+    ref: 'Note',
     localField: '_id',
     foreignField: 'users.user',
     justOne: false,
 });
+
+UserSchema.set('toJSON', { virtuals: true })
 
 UserSchema.pre('save', async function(next){
 
@@ -64,11 +66,11 @@ UserSchema.methods.comparePassword = async function(pw){
     return this;
 }
 
-UserSchema.methods.Companies = async function(){
-    let err, companies;
-    [err, companies] = await to(Company.find({'users.user':this._id}));
-    if(err) TE('err getting companies');
-    return companies;
+UserSchema.methods.getNotes = async function(){
+    let err, notes;
+    [err, notes] = await to(Note.find({'users.user':this._id}));
+    if(err) TE('err getting notes');
+    return notes;
 }
 
 UserSchema.virtual('full_name').set(function (name) {
@@ -91,10 +93,10 @@ UserSchema.methods.getJWT = function(){
 
 UserSchema.methods.toWeb = function(){
     let json = this.toJSON();
-    json.id = this._id;//this is for the front end
+    json.id = this._id; //this is for the front end
     return json;
 };
 
-let User = module.exports = mongoose.model('User', UserSchema);
+module.exports = mongoose.model('User', UserSchema);
 
 
