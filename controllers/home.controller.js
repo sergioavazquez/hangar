@@ -1,4 +1,4 @@
-const { to, ReE, ReS } = require('../services/util.service');
+const { to, eRe, sRe } = require('../services/util.service');
 
 const Dashboard = function(req, res){
 	let user = req.user.id;

@@ -23,12 +23,12 @@ router.put(     '/users',           passport.authenticate('jwt', {session:false}
 router.delete(  '/users',           passport.authenticate('jwt', {session:false}), UserController.remove);     // D
 router.post(    '/users/login',     UserController.login);
 
-router.post(    '/notes',             passport.authenticate('jwt', {session:false}), NoteController.create);                  // C
-router.get(     '/notes',             passport.authenticate('jwt', {session:false}), NoteController.getAll);                  // R
+router.post(    '/notes',           passport.authenticate('jwt', {session:false}), NoteController.create);               // C
+router.get(     '/notes',           passport.authenticate('jwt', {session:false}), NoteController.getAll);               // R
 
-router.get(     '/notes/:note_id', passport.authenticate('jwt', {session:false}), custom.note, NoteController.get);     // R
-router.put(     '/notes/:note_id', passport.authenticate('jwt', {session:false}), custom.note, NoteController.update);  // U
-router.delete(  '/notes/:note_id', passport.authenticate('jwt', {session:false}), custom.note, NoteController.remove);  // D
+router.get(     '/notes/:note_id',  passport.authenticate('jwt', {session:false}), custom.note, NoteController.get);     // R
+router.put(     '/notes/:note_id',  passport.authenticate('jwt', {session:false}), custom.note, NoteController.update);  // U
+router.delete(  '/notes/:note_id',  passport.authenticate('jwt', {session:false}), custom.note, NoteController.remove);  // D
 
 router.get('/dash', passport.authenticate('jwt', {session:false}),HomeController.Dashboard)
 

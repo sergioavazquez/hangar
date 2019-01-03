@@ -1,0 +1,28 @@
+version: '3'
+
+services:
+  server:
+    container_name: server
+    restart: always
+    build: .
+    ports:
+      - 3000:3000
+      - 9229:9229
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    depends_on: [database]
+    links:
+      - database
+    command: ${COMMAND_PARAMS}
+    # command: ["npm", "start"]
+    # command: ["npm", "run", "build"]
+  database:
+    container_name: database
+    image: mongo:4
+    restart: always
+    volumes:
+      - ${DB_DATA_DIR}:/data/db
+    ports:
+      - "27017:27017"
+    command: "mongod --smallfiles"

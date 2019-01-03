@@ -1,5 +1,4 @@
 const mongoose 			= require('mongoose');
-const {TE, to}          = require('../services/util.service');
 
 let NoteSchema = mongoose.Schema({
     title: {type:String},
@@ -9,7 +8,7 @@ let NoteSchema = mongoose.Schema({
 
 NoteSchema.methods.toWeb = function(){
     let json = this.toJSON();
-    json.id = this._id;//this is for the front end
+    json.id = this._id;
     return json;
 };
 

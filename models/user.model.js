@@ -4,7 +4,7 @@ const bcrypt_p 			= require('bcrypt-promise');
 const jwt           	= require('jsonwebtoken');
 const Note              = require('./note.model');
 const validate          = require('mongoose-validator');
-const {TE, to}          = require('../services/util.service');
+const {tErr, to}          = require('../services/util.service');
 const CONFIG            = require('../config/config');
 
 let UserSchema = mongoose.Schema({
@@ -42,10 +42,10 @@ UserSchema.pre('save', async function(next){
 
         let err, salt, hash;
         [err, salt] = await to(bcrypt.genSalt(10));
-        if(err) TE(err.message, true);
+        if(err) tErr(err.message, true);
 
         [err, hash] = await to(bcrypt.hash(this.password, salt));
-        if(err) TE(err.message, true);
+        if(err) tErr(err.message, true);
 
         this.password = hash;
 
@@ -56,12 +56,12 @@ UserSchema.pre('save', async function(next){
 
 UserSchema.methods.comparePassword = async function(pw){
     let err, pass;
-    if(!this.password) TE('password not set');
+    if(!this.password) tErr('password not set');
 
     [err, pass] = await to(bcrypt_p.compare(pw, this.password));
-    if(err) TE(err);
+    if(err) tErr(err);
 
-    if(!pass) TE('invalid password');
+    if(!pass) tErr('invalid password');
 
     return this;
 }
@@ -69,7 +69,7 @@ UserSchema.methods.comparePassword = async function(pw){
 UserSchema.methods.getNotes = async function(){
     let err, notes;
     [err, notes] = await to(Note.find({'users.user':this._id}));
-    if(err) TE('err getting notes');
+    if(err) tErr('err getting notes');
     return notes;
 }
 

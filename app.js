@@ -9,26 +9,29 @@ const v1 = require('./routes/v1');
 const app = express();
 
 const CONFIG = require('./config/config');
+
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
-//Passport
+// Passport
 app.use(passport.initialize());
 
-//Log Env
+// Log Env
 console.log("Environment:", CONFIG.app)
-//DATABASE
+
+// Database
 const models = require("./models");
 
 // CORS
 app.use(cors());
 
+// Router
 app.use('/v1', v1);
 
 app.use('/', function(req, res){
-	res.statusCode = 200;//send the appropriate status code
-	res.json({status:"success", message:"Mongo API", data:{}})
+	res.statusCode = 200; //send the appropriate status code
+	res.json({status:"success", message:"nothing to see here..." })
 });
 
 // catch 404 and forward to error handler
