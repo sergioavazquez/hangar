@@ -4,8 +4,10 @@
   "description": "",
   "main": "app.js",
   "scripts": {
+    "prestart":"eslint . --fix",
     "start": "node ./bin/www",
     "dev": "nodemon --inspect=0.0.0.0 ./bin/www",
+    "lint": "eslint . --fix",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -24,6 +26,7 @@
     "debug": "^4.1.1",
     "dotenv": "^6.2.0",
     "express": "^4.16.4",
+    "jsonwebtoken": "^8.4.0",
     "mongoose": "^5.4.1",
     "mongoose-validator": "^2.1.0",
     "morgan": "^1.9.1",
@@ -34,6 +37,12 @@
     "validator": "^10.10.0"
   },
   "devDependencies": {
-    "nodemon": "^1.18.9"
+    "eslint": "^5.11.1",
+    "eslint-config-airbnb": "^17.1.0",
+    "eslint-config-prettier": "^3.3.0",
+    "eslint-plugin-import": "^2.14.0",
+    "eslint-plugin-prettier": "^3.0.1",
+    "nodemon": "^1.18.9",
+    "prettier": "^1.15.3"
   }
 }

@@ -2,7 +2,7 @@ const { to } = require('await-to-js');
 const pe = require('parse-error');
 
 const cColors = {
-  reset:'\x1b[0m',
+  reset: '\x1b[0m',
   fgRed: '\x1b[31m',
   fgGreen: '\x1b[32m',
   fgYellow: '\x1b[33m',
@@ -17,8 +17,8 @@ const cColors = {
   bgBlue: '\x1b[44m',
   bgMagenta: '\x1b[45m',
   bgCyan: '\x1b[46m',
-  bgWhite: '\x1b[47m'
-}
+  bgWhite: '\x1b[47m',
+};
 module.exports.cColors = cColors;
 
 /** 
@@ -30,57 +30,66 @@ module.exports.cColors = cColors;
         .catch(err => [err]);
     }
 */
-module.exports.to = async (promise) => {
-  let err, res;
-  [err, res] = await to(promise);
+module.exports.to = async promise => {
+  const [err, res] = await to(promise);
   if (err) return [pe(err)];
 
   return [null, res];
 };
 
-module.exports.eRe = function (res, err, code) { // Error Web Response
-  if (typeof err == 'object' && typeof err.message != 'undefined') {
-    err = err.message;
+module.exports.eRe = function(res, err, code) {
+  // Error Web Response
+  let error = err;
+  if (typeof err === 'object' && typeof err.message !== 'undefined') {
+    error = err.message;
   }
 
   if (typeof code !== 'undefined') res.statusCode = code;
 
-  return res.json({ success: false, error: err });
+  return res.json({ success: false, error });
 };
 
-module.exports.sRe = function (res, data, code) { // Success Web Response
-  let send_data = { success: true };
+module.exports.sRe = function(res, data, code) {
+  // Success Web Response
+  let sendData = { success: true };
 
-  if (typeof data == 'object') {
-    send_data = Object.assign(data, send_data);//merge the objects
+  if (typeof data === 'object') {
+    sendData = Object.assign(data, sendData); // merge the objects
   }
 
   if (typeof code !== 'undefined') res.statusCode = code;
 
-  return res.json(send_data);
+  return res.json(sendData);
 };
 
-module.exports.tErr = function (err_message, log) { // tErr stands for Throw Error
+module.exports.tErr = function(errMessage, log) {
+  // tErr stands for Throw Error
   if (log === true) {
-    console.error(err_message);
+    console.error(errMessage);
   }
 
-  throw new Error(err_message);
+  throw new Error(errMessage);
 };
 
-module.exports.dbErrorHandler = function(error, reconnect){
+module.exports.dbErrorHandler = function(error, reconnect) {
   let knownError = false;
 
-  if(error.message.match(/failed to connect/) && error.message.match(/MongoNetworkError/))
-  {
+  if (
+    error.message.match(/failed to connect/) &&
+    error.message.match(/MongoNetworkError/)
+  ) {
     knownError = true;
-    console.log(cColors.fgCyan, '----- Waiting For Database -----', cColors.reset);
+    console.log(
+      cColors.fgCyan,
+      '----- Waiting For Database -----',
+      cColors.reset
+    );
     setTimeout(reconnect, 5000);
   }
 
-  if( !knownError ) {
+  if (!knownError) {
     console.log(cColors.fgYellow, '----- MongoDb Error -----', cColors.reset);
-    console.log("error", error);
+    console.log('error', error);
     console.log(cColors.fgYellow, '------- End Error -------', cColors.reset);
   }
 };

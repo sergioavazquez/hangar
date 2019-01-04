@@ -1,64 +1,64 @@
 const { Note } = require('../models');
 const { to, eRe, sRe } = require('../services/util.service');
 
-const create = async function(req, res){
-    res.setHeader('Content-Type', 'application/json');
-    let err, note;
-    let user = req.user;
+const create = async function(req, res) {
+  res.setHeader('Content-Type', 'application/json');
+  const { user } = req;
 
-    let note_info = req.body;
-    note_info.users = [{user:user._id}];
+  const noteInfo = req.body;
+  noteInfo.users = [{ user: user._id }];
 
-    [err, note] = await to(Note.create(note_info));
-    if(err) return eRe(res, err, 422);
+  const [err, note] = await to(Note.create(noteInfo));
+  if (err) return eRe(res, err, 422);
 
-    return sRe(res,{note:note.toWeb()}, 201);
-}
+  return sRe(res, { note: note.toWeb() }, 201);
+};
 module.exports.create = create;
 
-const getAll = async function(req, res){
-    res.setHeader('Content-Type', 'application/json');
-    let user = req.user;
-    let err, notes;
-    [err, notes] = await to(user.getNotes());
+const getAll = async function(req, res) {
+  res.setHeader('Content-Type', 'application/json');
+  const { user } = req;
 
-    let notes_json = []
-    for (let i in notes){
-        let note = notes[i];
-        notes_json.push(note.toWeb())
-    }
-    return sRe(res, {notes: notes_json});
-}
+  const [err, notes] = await to(user.getNotes());
+  if (err) return eRe(res, err, 422);
+
+  const notesJson = notes.map(note => note.toWeb());
+
+  // for (const i in notes) {
+  //   const note = notes[i];
+  //   notesJson.push(note.toWeb());
+  // }
+  return sRe(res, { notes: notesJson });
+};
 module.exports.getAll = getAll;
 
-const get = function(req, res){
-    res.setHeader('Content-Type', 'application/json');
-    let note = req.note;
-    return sRe(res, {note:note.toWeb()});
-}
+const get = function(req, res) {
+  res.setHeader('Content-Type', 'application/json');
+  const { note } = req;
+  return sRe(res, { note: note.toWeb() });
+};
 module.exports.get = get;
 
-const update = async function(req, res){
-    let err, note, data;
-    note = req.user;
-    data = req.body;
-    note.set(data);
+const update = async function(req, res) {
+  res.setHeader('Content-Type', 'application/json');
+  const { body, note } = req;
+  note.set(body);
 
-    [err, note] = await to(note.save());
-    if(err){
-        return eRe(res, err);
-    }
-    return sRe(res, {note:note.toWeb()});
-}
+  const [err, updatedNote] = await to(note.save());
+  if (err) {
+    return eRe(res, err);
+  }
+  return sRe(res, { note: updatedNote.toWeb() });
+};
 module.exports.update = update;
 
-const remove = async function(req, res){
-    let note, err;
-    note = req.note;
+const remove = async function(req, res) {
+  res.setHeader('Content-Type', 'application/json');
+  const { note } = req;
 
-    [err, note] = await to(note.remove());
-    if(err) return eRe(res, 'error occured trying to delete the note');
+  const [err] = await to(note.remove());
+  if (err) return eRe(res, 'error occured trying to delete the note');
 
-    return sRe(res, {message:'Deleted note'}, 204);
-}
+  return sRe(res, { message: 'Deleted note' }, 204);
+};
 module.exports.remove = remove;

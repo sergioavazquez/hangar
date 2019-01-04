@@ -1,90 +1,67 @@
-const { User } 	    = require('../models');
-const validator     = require('validator');
-const { to, tErr }    = require('../services/util.service');
+const validator = require('validator');
+const { User } = require('../models');
+const { to, tErr } = require('../services/util.service');
+const CONFIG = require('../config/config');
 
-const getUniqueKeyFromBody = function(body){// this is so they can send in 3 options unique_key, email, or phone and it will work
-    let unique_key = body.unique_key;
-    if(typeof unique_key==='undefined'){
-        if(typeof body.email != 'undefined'){
-            unique_key = body.email
-        }else if(typeof body.phone != 'undefined'){
-            unique_key = body.phone
-        }else{
-            unique_key = null;
-        }
-    }
+const getUniqueKeyFromBody = function(body) {
+  const authUniqueKey = CONFIG.auth_unique_key;
+  let uniqueKey;
+  if (body) {
+    uniqueKey = body[authUniqueKey];
+  }
 
-    return unique_key;
-}
+  return uniqueKey;
+};
 module.exports.getUniqueKeyFromBody = getUniqueKeyFromBody;
 
-const createUser = async function(userInfo){
-    let unique_key, auth_info, err;
+const createUser = async function(userInfo) {
+  const authInfo = {};
+  authInfo.status = 'create';
+  authInfo.method = CONFIG.auth_unique_key;
 
-    auth_info={}
-    auth_info.status='create';
-
-    unique_key = getUniqueKeyFromBody(userInfo);
-    if(!unique_key) tErr('An email or phone number was not entered.');
-
-    if(validator.isEmail(unique_key)){
-        auth_info.method = 'email';
-        userInfo.email = unique_key;
-
-        [err, user] = await to(User.create(userInfo));
-        if(err) tErr('user already exists with that email');
-
-        return user;
-
-    }else if(validator.isMobilePhone(unique_key, 'any')){//checks if only phone number was sent
-        auth_info.method = 'phone';
-        userInfo.phone = unique_key;
-
-        [err, user] = await to(User.create(userInfo));
-        if(err) tErr('user already exists with that phone number');
-
-        return user;
-    }else{
-        tErr('A valid email or phone number was not entered.');
+  const uniqueKey = getUniqueKeyFromBody(userInfo);
+  if (!uniqueKey) tErr(`Missing method ${authInfo.method}.`);
+  // Email validation
+  if (authInfo.method === 'email') {
+    if (validator.isEmail(uniqueKey)) {
+      authInfo.email = uniqueKey;
+      const newUser = Object.assign({}, userInfo, authInfo);
+      const [err, user] = await to(User.create(newUser));
+      if (err) tErr('User email is already registered.');
+      return user;
     }
-}
+  }
+
+  tErr(`${uniqueKey} is not a valid ${authInfo.method}.`);
+  return null;
+};
 module.exports.createUser = createUser;
 
-const authUser = async function(userInfo){//returns token
-    let unique_key;
-    let auth_info = {};
-    auth_info.status = 'login';
-    unique_key = getUniqueKeyFromBody(userInfo);
+const authUser = async function(userInfo) {
+  // returns token
+  const authInfo = {};
+  authInfo.status = 'login';
+  authInfo.method = CONFIG.auth_unique_key;
+  const uniqueKey = getUniqueKeyFromBody(userInfo);
 
-    if(!unique_key) tErr('Please enter an email or phone number to login');
+  if (!uniqueKey) tErr(`${authInfo.method} is required to login.`);
 
+  if (!userInfo.password) tErr('Please enter a password to login');
 
-    if(!userInfo.password) tErr('Please enter a password to login');
-
-    let user;
-    if(validator.isEmail(unique_key)){
-        auth_info.method='email';
-
-        [err, user] = await to(User.findOne({email:unique_key }));
-        if(err) tErr(err.message);
-
-    }else if(validator.isMobilePhone(unique_key, 'any')){//checks if only phone number was sent
-        auth_info.method='phone';
-
-        [err, user] = await to(User.findOne({phone:unique_key }));
-        if(err) tErr(err.message);
-
-    }else{
-        tErr('A valid email or phone number was not entered');
+  let user;
+  let err;
+  if (authInfo.method === 'email') {
+    if (validator.isEmail(uniqueKey)) {
+      [err, user] = await to(User.findOne({ email: uniqueKey }));
+      if (err) tErr(err.message);
     }
+  }
+  if (!user) tErr('User not registered');
 
-    if(!user) tErr('Not registered');
+  [err, user] = await to(user.comparePassword(userInfo.password));
 
-    [err, user] = await to(user.comparePassword(userInfo.password));
+  if (err) tErr(err.message);
 
-    if(err) tErr(err.message);
-
-    return user;
-
-}
+  return user;
+};
 module.exports.authUser = authUser;
