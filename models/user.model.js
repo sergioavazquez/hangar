@@ -99,10 +99,17 @@ UserSchema.virtual('full_name').get(function() {
 });
 
 UserSchema.methods.getJWT = function() {
-  const expirationTime = parseInt(CONFIG.jwt_expiration, 10);
-  return `Bearer ${jwt.sign({ user_id: this._id }, CONFIG.jwt_encryption, {
+  let expirationTime = 10000; // default in seconds
+  if (typeof CONFIG.jwt_expiration === 'number') {
+    expirationTime = parseInt(CONFIG.jwt_expiration, 10);
+  }
+  if (typeof CONFIG.jwt_expiration === 'string') {
+    expirationTime = CONFIG.jwt_expiration;
+  }
+  const token = jwt.sign({ user_id: this._id }, CONFIG.jwt_encryption, {
     expiresIn: expirationTime,
-  })}`;
+  });
+  return `Bearer ${token}`;
 };
 
 UserSchema.methods.toWeb = function() {

@@ -1,7 +1,6 @@
 const Note = require('../models/note.model');
 const { to, eRe } = require('../services/util.service');
 
-// --eslint-disable-next-line consistent-return
 const noteMiddleware = async function(req, res, next) {
   const noteId = req.params.note_id;
 
