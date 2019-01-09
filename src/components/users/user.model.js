@@ -3,9 +3,8 @@ const bcrypt = require('bcrypt');
 const bcryptP = require('bcrypt-promise');
 const jwt = require('jsonwebtoken');
 const validate = require('mongoose-validator');
-const Note = require('./note.model');
-const { tErr, to } = require('../services/util.service');
-const CONFIG = require('../config/config');
+const { tErr, to } = require('../../utils/util.service');
+const CONFIG = require('../../config/config');
 
 const UserSchema = mongoose.Schema(
   {
@@ -28,6 +27,7 @@ const UserSchema = mongoose.Schema(
     },
     email: {
       type: String,
+      required: true,
       lowercase: true,
       trim: true,
       index: true,
@@ -53,18 +53,16 @@ UserSchema.virtual('notes', {
 });
 
 UserSchema.set('toJSON', { virtuals: true });
+UserSchema.set('toObject', { virtuals: true });
 
 UserSchema.pre('save', async function(next) {
-  let err;
-  let salt;
-  let hash;
   let result;
   if (this.isModified('password') || this.isNew) {
-    [err, salt] = await to(bcrypt.genSalt(10));
+    const [err, salt] = await to(bcrypt.genSalt(10));
     if (err) tErr(err.message, true);
 
-    [err, hash] = await to(bcrypt.hash(this.password, salt));
-    if (err) tErr(err.message, true);
+    const [err2, hash] = await to(bcrypt.hash(this.password, salt));
+    if (err2) tErr(err.message, true);
 
     this.password = hash;
   } else {
@@ -82,12 +80,6 @@ UserSchema.methods.comparePassword = async function(pw) {
   if (!pass) tErr('invalid password');
 
   return this;
-};
-
-UserSchema.methods.getNotes = async function() {
-  const [err, notes] = await to(Note.find({ 'users.user': this._id }));
-  if (err) tErr('err getting notes');
-  return notes;
 };
 
 UserSchema.virtual('full_name').get(function() {
@@ -115,6 +107,7 @@ UserSchema.methods.getJWT = function() {
 UserSchema.methods.toWeb = function() {
   const json = this.toJSON();
   json.id = this._id; // this is for the front end
+  delete json.password;
   return json;
 };
 

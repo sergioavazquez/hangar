@@ -19,6 +19,6 @@ then
     echo " ---------------------- "
     COMMAND='tail -f /dev/null'
 fi
-
+USER="$(id -u):$(id -g)"
 echo "Running docker-compose with ""${COMMAND}"
-COMMAND_PARAMS=${COMMAND} docker-compose up
+COMMAND_PARAMS=${COMMAND} CURRENT_UID=${USER} docker-compose up

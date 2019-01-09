@@ -1,5 +1,6 @@
-const authService = require('../services/auth.service');
-const { to, eRe, sRe } = require('../services/util.service');
+// const User = require('./user.model');
+const authService = require('./auth.service');
+const { to, eRe, sRe } = require('../../utils/util.service');
 
 const create = async function(req, res) {
   res.setHeader('Content-Type', 'application/json');
@@ -32,6 +33,20 @@ const get = async function(req, res) {
   return sRe(res, { user: user.toWeb() });
 };
 module.exports.get = get;
+
+/**
+ * Just an example to populate user virtuals.
+ */
+// const get = async function(req, res) {
+//   res.setHeader('Content-Type', 'application/json');
+//   const { user } = req;
+//   const [err, result] = await to(
+//     User.findOne({ _id: user.id }).populate('notes')
+//   );
+//   if (err) return eRe(res, err, 422);
+//   return sRe(res, { user: result.toWeb() });
+// };
+// module.exports.get = get;
 
 const update = async function(req, res) {
   let error;

@@ -1,12 +1,13 @@
 const validator = require('validator');
-const { User } = require('../models');
-const { to, tErr } = require('../services/util.service');
-const CONFIG = require('../config/config');
+const User = require('./user.model');
+const { to, tErr } = require('../../utils/util.service');
+const CONFIG = require('../../config/config');
 
 const getUniqueKeyFromBody = function(body) {
   const authUniqueKey = CONFIG.auth_unique_key;
   let uniqueKey;
   if (body) {
+    // eslint-disable-next-line
     uniqueKey = body[authUniqueKey];
   }
 

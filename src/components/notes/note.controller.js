@@ -1,5 +1,5 @@
-const { Note } = require('../models');
-const { to, eRe, sRe } = require('../services/util.service');
+const Note = require('./note.model');
+const { to, eRe, sRe } = require('../../utils/util.service');
 
 const create = async function(req, res) {
   res.setHeader('Content-Type', 'application/json');
@@ -19,15 +19,11 @@ const getAll = async function(req, res) {
   res.setHeader('Content-Type', 'application/json');
   const { user } = req;
 
-  const [err, notes] = await to(user.getNotes());
+  const [err, notes] = await to(Note.find({ 'users.user': user._id }));
   if (err) return eRe(res, err, 422);
 
   const notesJson = notes.map(note => note.toWeb());
 
-  // for (const i in notes) {
-  //   const note = notes[i];
-  //   notesJson.push(note.toWeb());
-  // }
   return sRe(res, { notes: notesJson });
 };
 module.exports.getAll = getAll;

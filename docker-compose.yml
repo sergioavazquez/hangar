@@ -3,6 +3,7 @@ version: '3'
 services:
   server:
     container_name: server
+    user: ${CURRENT_UID}
     restart: always
     build: .
     ports:
@@ -20,6 +21,7 @@ services:
   database:
     container_name: database
     image: mongo:4
+    user: ${CURRENT_UID}
     restart: always
     volumes:
       - ${DB_DATA_DIR}:/data/db

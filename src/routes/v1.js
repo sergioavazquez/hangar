@@ -3,14 +3,14 @@ const express = require('express');
 const router = express.Router();
 
 const passport = require('passport');
-// const path = require('path');
-const UserController = require('../controllers/user.controller');
-const NoteController = require('../controllers/note.controller');
+require('../components/users/passport.middleware')(passport);
+
+const UserController = require('../components/users/user.controller');
+const NoteController = require('../components/notes/note.controller');
 const HomeController = require('../controllers/home.controller');
 
-const custom = require('./../middleware/custom');
+const noteMiddleware = require('../components/notes/note.middleware');
 
-require('./../middleware/passport')(passport);
 /* GET home page. */
 router.get('/', (req, res) => {
   res.json({
@@ -52,19 +52,19 @@ router.get(
 router.get(
   '/notes/:note_id',
   passport.authenticate('jwt', { session: false }),
-  custom.note,
+  noteMiddleware.checkUp,
   NoteController.get
 ); // R
 router.put(
   '/notes/:note_id',
   passport.authenticate('jwt', { session: false }),
-  custom.note,
+  noteMiddleware.checkUp,
   NoteController.update
 ); // U
 router.delete(
   '/notes/:note_id',
   passport.authenticate('jwt', { session: false }),
-  custom.note,
+  noteMiddleware.checkUp,
   NoteController.remove
 ); // D
 
@@ -75,6 +75,6 @@ router.get(
 );
 
 //* ******** API DOCUMENTATION **********
-// router.use('/docs/api.json',            express.static(path.join(__dirname, '/../public/v1/documentation/api.json')));
-// router.use('/docs',                     express.static(path.join(__dirname, '/../public/v1/documentation/dist')));
+// router.use('/docs/api.json', express.static(path.join(__dirname, '/../public/v1/documentation/api.json')));
+// router.use('/docs', express.static(path.join(__dirname, '/../public/v1/documentation/dist')));
 module.exports = router;

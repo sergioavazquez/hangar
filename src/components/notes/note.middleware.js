@@ -1,7 +1,7 @@
-const Note = require('../models/note.model');
-const { to, eRe } = require('../services/util.service');
+const Note = require('./note.model');
+const { to, eRe } = require('../../utils/util.service');
 
-const noteMiddleware = async function(req, res, next) {
+const noteCheckUp = async function(req, res, next) {
   const noteId = req.params.note_id;
 
   const [err, note] = await to(Note.findOne({ _id: noteId }));
@@ -22,4 +22,4 @@ const noteMiddleware = async function(req, res, next) {
   next();
   return null;
 };
-module.exports.note = noteMiddleware;
+module.exports.checkUp = noteCheckUp;

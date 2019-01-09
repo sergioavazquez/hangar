@@ -5,10 +5,10 @@ const passport = require('passport');
 const pe = require('parse-error');
 const cors = require('cors');
 const v1 = require('./routes/v1');
+const CONFIG = require('./config/config');
+require('./db'); // Database
 
 const app = express();
-
-const CONFIG = require('./config/config');
 
 app.use(logger('dev'));
 app.use(bodyParser.json());
@@ -19,9 +19,6 @@ app.use(passport.initialize());
 
 // Log Env
 console.log('Environment:', CONFIG.app);
-
-// Database
-require('./models');
 
 // CORS
 app.use(cors());
@@ -56,4 +53,10 @@ module.exports = app;
 
 process.on('unhandledRejection', error => {
   console.error('Uncaught Error', pe(error));
+});
+
+process.on('uncaughtException', error => {
+  // errorManagement.handler.handleError(error);
+  // if(!errorManagement.handler.isTrustedError(error))
+  throw new Error(error);
 });

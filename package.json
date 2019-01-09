@@ -4,10 +4,10 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "prestart":"eslint . --fix",
-    "start": "node ./bin/www",
-    "dev": "nodemon --inspect=0.0.0.0 ./bin/www",
-    "lint": "eslint . --fix",
+    "prestart": "eslint ./src --fix",
+    "start": "node ./src/bin/www",
+    "dev": "nodemon --inspect=0.0.0.0 ./src/bin/www",
+    "lint": "eslint ./src --fix",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -41,8 +41,13 @@
     "eslint-config-airbnb": "^17.1.0",
     "eslint-config-prettier": "^3.3.0",
     "eslint-plugin-import": "^2.14.0",
+    "eslint-plugin-node": "^8.0.1",
     "eslint-plugin-prettier": "^3.0.1",
+    "eslint-plugin-security": "^1.4.0",
     "nodemon": "^1.18.9",
     "prettier": "^1.15.3"
+  },
+  "engines": {
+    "node": ">=10.14.0"
   }
 }

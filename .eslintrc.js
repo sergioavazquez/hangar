@@ -3,8 +3,8 @@ module.exports = {
         "es6": true,
         "node": true
     },
-    "extends": ["airbnb-base", "prettier"],
-    "plugins": ["prettier"],
+    "extends": ["airbnb-base", "prettier", "plugin:node/recommended", "plugin:security/recommended"],
+    "plugins": ["prettier", "security"],
     "rules": {
         "no-console": "off",
         "func-names": "off",

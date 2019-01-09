@@ -1,5 +1,5 @@
-const { to } = require('await-to-js');
-const pe = require('parse-error');
+// const { to } = require('await-to-js');
+// const pe = require('parse-error');
 
 const cColors = {
   reset: '\x1b[0m',
@@ -21,7 +21,7 @@ const cColors = {
 };
 module.exports.cColors = cColors;
 
-/** 
+/**
  * This is basically what await-to-js does:
     export default function to(promise) {
         return promise.then(data => {
@@ -30,12 +30,25 @@ module.exports.cColors = cColors;
         .catch(err => [err]);
     }
 */
-module.exports.to = async promise => {
-  const [err, res] = await to(promise);
-  if (err) return [pe(err)];
 
-  return [null, res];
+module.exports.to = function(promise) {
+  return promise.then(data => [null, data]).catch(err => [err]);
 };
+
+// function to(promise) {
+//   return promise.then(data => {
+//       return [null, data];
+//   })
+//   .catch(err => [err]);
+// }
+
+// module.exports.to = async promise => {
+//   const [err, res] = await to(promise);
+//   if (err) return [err];
+//   // if (err) return [pe(err)];
+
+//   return [null, res];
+// };
 
 module.exports.eRe = function(res, err, code) {
   // Error Web Response
@@ -69,27 +82,4 @@ module.exports.tErr = function(errMessage, log) {
   }
 
   throw new Error(errMessage);
-};
-
-module.exports.dbErrorHandler = function(error, reconnect) {
-  let knownError = false;
-
-  if (
-    error.message.match(/failed to connect/) &&
-    error.message.match(/MongoNetworkError/)
-  ) {
-    knownError = true;
-    console.log(
-      cColors.fgCyan,
-      '----- Waiting For Database -----',
-      cColors.reset
-    );
-    setTimeout(reconnect, 5000);
-  }
-
-  if (!knownError) {
-    console.log(cColors.fgYellow, '----- MongoDb Error -----', cColors.reset);
-    console.log('error', error);
-    console.log(cColors.fgYellow, '------- End Error -------', cColors.reset);
-  }
 };
