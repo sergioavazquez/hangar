@@ -25,6 +25,7 @@ services:
     restart: always
     volumes:
       - ${DB_DATA_DIR}:/data/db
+      - ${DB_TEST_DIR}:/test/db
     ports:
       - "27017:27017"
     command: "mongod --smallfiles"

@@ -1,5 +1,8 @@
 # Initial docker image
 FROM node:10.14
+# Create user and group and use them
+# RUN groupadd -r nodejs && useradd -m -r -g nodejs nodejs
+# USER nodejs
 # Container internal path.
 WORKDIR /usr/src/app
 # Copy project's package.json to workdir to install dependencies

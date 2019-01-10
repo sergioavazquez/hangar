@@ -2,13 +2,14 @@ const express = require('express');
 const logger = require('morgan');
 const bodyParser = require('body-parser');
 const passport = require('passport');
-const pe = require('parse-error');
+// const pe = require('parse-error');
 const cors = require('cors');
 const v1 = require('./routes/v1');
-const CONFIG = require('./config/config');
-require('./db'); // Database
+const db = require('./db'); // Database
+// const CONFIG = require('./config/config');
 
 const app = express();
+db.connect();
 
 app.use(logger('dev'));
 app.use(bodyParser.json());
@@ -18,7 +19,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(passport.initialize());
 
 // Log Env
-console.log('Environment:', CONFIG.app);
+console.log('Environment (dev - prod - test):', process.env.NODE_ENV);
 
 // CORS
 app.use(cors());
@@ -52,7 +53,7 @@ app.use((err, req, res) => {
 module.exports = app;
 
 process.on('unhandledRejection', error => {
-  console.error('Uncaught Error', pe(error));
+  throw new Error(error);
 });
 
 process.on('uncaughtException', error => {

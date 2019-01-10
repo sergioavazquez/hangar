@@ -13,13 +13,22 @@ const mongoUri = `mongodb://${CONFIG.db_host}:${CONFIG.db_port}/${
   CONFIG.db_name
 }`;
 
-const connectToDb = () => {
+const { connection } = mongoose;
+
+const connect = () => {
   mongoose.connect(mongoUri).catch(err => {
     console.log(
       cColors.fgRed,
       `Can Not Connect to Mongo Server: ${mongoUri}`,
       cColors.reset
     );
+    console.log(`Mongo connect error: ${err}`);
+  });
+};
+
+const disconnect = () => {
+  mongoose.disconnect().catch(err => {
+    console.log(cColors.fgRed, 'Mongo disconnect failed', cColors.reset);
     console.log(`Mongo connect error: ${err}`);
   });
 };
@@ -47,11 +56,9 @@ const dbErrorHandler = (error, reconnect) => {
   }
 };
 
-connectToDb();
+// connect();
 
-const db = mongoose.connection;
-
-db.once('open', () => {
+connection.once('open', () => {
   console.log(
     cColors.fgCyan,
     `----- Connected to: ${mongoUri} ----`,
@@ -59,8 +66,10 @@ db.once('open', () => {
   );
 });
 
-db.on('error', error => {
-  dbErrorHandler(error, connectToDb);
+connection.on('error', error => {
+  dbErrorHandler(error, connect);
 });
 
-module.exports = db;
+const dbInterface = { connection, connect, disconnect };
+
+module.exports = dbInterface;

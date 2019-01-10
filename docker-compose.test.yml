@@ -1,0 +1,5 @@
+version: '3'
+
+services:
+  database:
+    command: "mongod --dbpath /test/db --smallfiles"
