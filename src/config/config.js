@@ -10,13 +10,13 @@ CONFIG.db_host = process.env.DB_HOST || 'localhost';
 CONFIG.db_port = process.env.DB_PORT || '27017';
 
 if (process.env.NODE_ENV === 'test') {
-  CONFIG.db_name = process.env.DB_NAME || 'test_db';
-  CONFIG.db_user = process.env.DB_USER || 'tester';
-  CONFIG.db_password = process.env.DB_PASSWORD || 'dummy-password';
+  CONFIG.db_name = process.env.DB_TEST_NAME || 'test_db';
+  CONFIG.db_user = process.env.DB_TEST_USER || 'dbTester';
+  CONFIG.db_password = process.env.DB_TEST_PASS || '123456';
 } else {
-  CONFIG.db_name = process.env.DB_NAME || 'name';
-  CONFIG.db_user = process.env.DB_USER || 'root';
-  CONFIG.db_password = process.env.DB_PASSWORD || 'db-password';
+  CONFIG.db_name = process.env.DB_NAME || 'dbName';
+  CONFIG.db_user = process.env.DB_USER || 'dbAdmin';
+  CONFIG.db_password = process.env.DB_PASSWORD || 'dummy-password';
 }
 
 // App test configurations

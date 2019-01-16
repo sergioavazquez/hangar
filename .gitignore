@@ -1,5 +1,7 @@
 node_modules
 .env
 .vscode
-database
+database/mongo_db
+database/mongo_db_test
+database/logs
 .DS_Store

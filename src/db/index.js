@@ -15,15 +15,25 @@ const mongoUri = `mongodb://${CONFIG.db_host}:${CONFIG.db_port}/${
 
 const { connection } = mongoose;
 
+const options = {
+  user: CONFIG.db_user,
+  pass: CONFIG.db_password,
+};
+
 const connect = () => {
-  mongoose.connect(mongoUri).catch(err => {
-    console.log(
-      cColors.fgRed,
-      `Can Not Connect to Mongo Server: ${mongoUri}`,
-      cColors.reset
-    );
-    console.log(`Mongo connect error: ${err}`);
-  });
+  mongoose
+    .connect(
+      mongoUri,
+      options
+    )
+    .catch(err => {
+      console.log(
+        cColors.fgRed,
+        `Can Not Connect to Mongo Server: ${mongoUri}`,
+        cColors.reset
+      );
+      console.log(`Mongo connect error: ${err}`);
+    });
 };
 
 const disconnect = () => {

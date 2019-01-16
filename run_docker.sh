@@ -30,12 +30,12 @@ then
     echo " ---------------------- "
     echo " Press ctrl+c to close "
     echo " ---------------------- "
-    COMMAND='npm run dev'
+    COMMAND='npm run test_bla'
     echo "Running docker-compose with ""${COMMAND}"
-    COMMAND_PARAMS=${COMMAND} CURRENT_UID=${USER} docker-compose -f docker-compose.yml -f docker-compose.test.yml up
+    COMMAND_PARAMS=${COMMAND} docker-compose -f docker-compose.yml -f docker-compose.test.yml up
     exit
 fi
 
 
 echo "Running docker-compose with ""${COMMAND}"
-COMMAND_PARAMS=${COMMAND} CURRENT_UID=${USER} docker-compose up
+COMMAND_PARAMS=${COMMAND} docker-compose up

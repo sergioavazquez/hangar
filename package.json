@@ -8,7 +8,8 @@
     "start": "NODE_ENV=prod node ./src/bin/www",
     "dev": "NODE_ENV=dev nodemon --inspect=0.0.0.0 ./src/bin/www",
     "lint": "eslint ./src --fix",
-    "test": "NODE_ENV=test jest"
+    "test": "NODE_ENV=test jest",
+    "test_bla": "NODE_ENV=test nodemon --inspect=0.0.0.0 ./src/bin/www"
   },
   "repository": {
     "type": "git",
