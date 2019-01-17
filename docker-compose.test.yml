@@ -1,5 +1,8 @@
 version: '3'
 
 services:
+  server:
+    restart: "no"
   database:
+    restart: "no"
     command: "mongod --dbpath /test/db --smallfiles"

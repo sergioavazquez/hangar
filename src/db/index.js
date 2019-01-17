@@ -20,7 +20,7 @@ const options = {
   pass: CONFIG.db_password,
 };
 
-const connect = () => {
+const connect = () =>
   mongoose
     .connect(
       mongoUri,
@@ -34,7 +34,6 @@ const connect = () => {
       );
       console.log(`Mongo connect error: ${err}`);
     });
-};
 
 const disconnect = () => {
   mongoose.disconnect().catch(err => {
@@ -66,8 +65,6 @@ const dbErrorHandler = (error, reconnect) => {
   }
 };
 
-// connect();
-
 connection.once('open', () => {
   console.log(
     cColors.fgCyan,
@@ -78,6 +75,24 @@ connection.once('open', () => {
 
 connection.on('error', error => {
   dbErrorHandler(error, connect);
+});
+
+connection.on('disconnected', () => {
+  console.log(
+    cColors.fgCyan,
+    '----- Database Disconnected -----',
+    cColors.reset
+  );
+});
+
+process.on('SIGINT', () => {
+  connection.close(() => {
+    console.log(
+      cColors.fgCyan,
+      '----- Closed DB due app closing -----',
+      cColors.reset
+    );
+  });
 });
 
 const dbInterface = { connection, connect, disconnect };

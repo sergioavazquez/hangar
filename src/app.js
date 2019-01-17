@@ -9,7 +9,10 @@ const db = require('./db'); // Database
 // const CONFIG = require('./config/config');
 
 const app = express();
-db.connect();
+
+if (process.env.NODE_ENV !== 'test') {
+  db.connect();
+}
 
 app.use(logger('dev'));
 app.use(bodyParser.json());

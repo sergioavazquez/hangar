@@ -83,3 +83,17 @@ module.exports.tErr = function(errMessage, log) {
 
   throw new Error(errMessage);
 };
+
+module.exports.chain = (promises, cb) => {
+  promises
+    .reduce(async (previousPromises, next) => {
+      await previousPromises;
+      return next;
+    }, Promise.resolve())
+    .then(() => {
+      cb();
+    })
+    .catch(e => {
+      console.log('chain promises failed.', e);
+    });
+};
