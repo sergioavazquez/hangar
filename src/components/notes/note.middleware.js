@@ -15,7 +15,8 @@ const noteCheckUp = async function(req, res, next) {
   if (!usersArray.includes(String(user._id)))
     return eRe(
       res,
-      `User does not have permission to read note with id: ${noteId}`
+      `User does not have permission to read note with id: ${noteId}`,
+      401
     );
 
   req.note = note;

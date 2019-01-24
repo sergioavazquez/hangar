@@ -15,7 +15,7 @@ const noteMiddleware = require('../components/notes/note.middleware');
 router.get('/', (req, res) => {
   res.json({
     status: 'success',
-    message: 'Parcel Pending API',
+    message: 'Hangar API root',
     data: { version_number: 'v0.0.1' },
   });
 });

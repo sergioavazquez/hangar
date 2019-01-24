@@ -67,7 +67,7 @@ const update = async function(req, res) {
 
     return eRe(res, error);
   }
-  return sRe(res, { message: `Updated User: ${updatedUser.email}` });
+  return sRe(res, { user: updatedUser.toWeb() });
 };
 module.exports.update = update;
 

@@ -106,7 +106,6 @@ UserSchema.methods.getJWT = function() {
 
 UserSchema.methods.toWeb = function() {
   const json = this.toJSON();
-  json.id = this._id; // this is for the front end
   delete json.password;
   return json;
 };

@@ -16,7 +16,6 @@ const NoteSchema = mongoose.Schema(
 
 NoteSchema.methods.toWeb = function() {
   const json = this.toJSON();
-  json.id = this._id;
   return json;
 };
 

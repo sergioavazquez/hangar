@@ -21,19 +21,14 @@ const options = {
 };
 
 const connect = () =>
-  mongoose
-    .connect(
-      mongoUri,
-      options
-    )
-    .catch(err => {
-      console.log(
-        cColors.fgRed,
-        `Can Not Connect to Mongo Server: ${mongoUri}`,
-        cColors.reset
-      );
-      console.log(`Mongo connect error: ${err}`);
-    });
+  mongoose.connect(mongoUri, options).catch(err => {
+    console.log(
+      cColors.fgRed,
+      `Can Not Connect to Mongo Server: ${mongoUri}`,
+      cColors.reset
+    );
+    console.log(`Mongo connect error: ${err}`);
+  });
 
 const disconnect = () => {
   mongoose.disconnect().catch(err => {
@@ -95,6 +90,14 @@ process.on('SIGINT', () => {
   });
 });
 
-const dbInterface = { connection, connect, disconnect };
+function dbInterface() {
+  return {
+    connection,
+    connect,
+    disconnect,
+  };
+}
+
+// const dbInterface = { connection, connect, disconnect };
 
 module.exports = dbInterface;

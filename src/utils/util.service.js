@@ -1,5 +1,3 @@
-// const { to } = require('await-to-js');
-// const pe = require('parse-error');
 
 const cColors = {
   reset: '\x1b[0m',
