@@ -1,4 +1,3 @@
-
 const cColors = {
   reset: '\x1b[0m',
   fgRed: '\x1b[31m',

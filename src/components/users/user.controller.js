@@ -65,7 +65,7 @@ const update = async function(req, res) {
       }
     }
 
-    return eRe(res, error);
+    return eRe(res, error, 422);
   }
   return sRe(res, { user: updatedUser.toWeb() });
 };
@@ -73,7 +73,7 @@ module.exports.update = update;
 
 const remove = async function(req, res) {
   const { user } = req;
-  const [err] = await to(user.destroy());
+  const [err] = await to(user.remove());
   if (err) return eRe(res, 'An error occured trying to delete user');
 
   return sRe(res, { message: 'Deleted User' }, 204);

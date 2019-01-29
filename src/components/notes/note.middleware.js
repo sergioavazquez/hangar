@@ -5,9 +5,9 @@ const noteCheckUp = async function(req, res, next) {
   const noteId = req.params.note_id;
 
   const [err, note] = await to(Note.findOne({ _id: noteId }));
-  if (err) return eRe(res, 'Error finding resource', 400);
+  if (err) return eRe(res, 'Resource not found', 404);
 
-  if (!note) return eRe(res, `Resource not found`, 404);
+  if (!note) return eRe(res, 'Resource not found', 404);
 
   const { user } = req;
   const usersArray = note.users.map(obj => String(obj.user));

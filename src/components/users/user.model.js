@@ -40,7 +40,7 @@ const UserSchema = mongoose.Schema(
         }),
       ],
     },
-    password: { type: String },
+    password: { type: String, required: true },
   },
   { timestamps: true }
 );
