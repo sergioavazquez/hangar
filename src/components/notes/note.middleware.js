@@ -1,5 +1,6 @@
+const { to } = require('meeseeks-js');
 const Note = require('./note.model');
-const { to, eRe } = require('../../utils/util.service');
+const { eRe } = require('../../utils/util.service');
 
 const noteCheckUp = async function(req, res, next) {
   const noteId = req.params.note_id;

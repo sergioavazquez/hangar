@@ -29,7 +29,7 @@ then
     echo " ---------------------- "
     echo " Press ctrl+c to close "
     echo " ---------------------- "
-    COMMAND='npm run test'
+    COMMAND='npm run test:int'
     echo "Running docker-compose with ""${COMMAND}"
     COMMAND_PARAMS=${COMMAND} docker-compose -f docker-compose.yml -f docker-compose.test.yml up
     exit
@@ -42,7 +42,7 @@ then
     echo " ---------------------- "
     echo " Press ctrl+c to close "
     echo " ---------------------- "
-    COMMAND='npm run test_unit'
+    COMMAND='npm run test:unit'
     echo "Running docker-compose with ""${COMMAND}"
     COMMAND_PARAMS=${COMMAND} docker-compose -f docker-compose.yml -f docker-compose.test.yml up
     exit
@@ -56,7 +56,7 @@ then
     echo " ---------------------- "
     echo " Press ctrl+c to close "
     echo " ---------------------- "
-    COMMAND='npm run test_dev'
+    COMMAND='npm run test:dev'
     echo "Running docker-compose with ""${COMMAND}"
     COMMAND_PARAMS=${COMMAND} docker-compose -f docker-compose.yml -f docker-compose.test.yml up
     exit

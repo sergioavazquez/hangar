@@ -4,10 +4,10 @@ const bodyParser = require('body-parser');
 const passport = require('passport');
 const { asValue, asFunction, asClass, createContainer } = require('awilix');
 const cors = require('cors');
+const { Store } = require('meeseeks-js');
 const v1 = require('./routes/v1');
 const db = require('./db'); // Database
 const CONFIG = require('./config/config');
-const store = require('./utils/util.store');
 const { eRe } = require('./utils/util.service');
 
 const app = express();
@@ -27,7 +27,7 @@ const container = createContainer();
 container.register({
   db: asFunction(db).singleton(),
   config: asValue(CONFIG),
-  store: asClass(store).singleton(),
+  store: asClass(Store).singleton(),
 });
 
 app.locals.container = container;
@@ -37,6 +37,12 @@ console.log('Environment (dev - prod - test):', process.env.NODE_ENV);
 
 // CORS
 app.use(cors());
+
+// Add success and error responses to avoid importing each time.
+// app.use((req, res, next) => {
+//   res.hangar = { eRe, sRe };
+//   next();
+// });
 
 // Router
 app.use('/v1', v1);
@@ -53,7 +59,6 @@ app.route('/').all((req, res) => {
 app.use((req, res) => {
   const err = new Error('Not Found');
   err.status = 404;
-  // next(err);
   return eRe(res, err, 404);
 });
 

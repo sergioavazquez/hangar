@@ -18,35 +18,6 @@ const cColors = {
 };
 module.exports.cColors = cColors;
 
-/**
- * This is basically what await-to-js does:
-    export default function to(promise) {
-        return promise.then(data => {
-            return [null, data];
-        })
-        .catch(err => [err]);
-    }
-*/
-
-module.exports.to = function(promise) {
-  return promise.then(data => [null, data]).catch(err => [err]);
-};
-
-// function to(promise) {
-//   return promise.then(data => {
-//       return [null, data];
-//   })
-//   .catch(err => [err]);
-// }
-
-// module.exports.to = async promise => {
-//   const [err, res] = await to(promise);
-//   if (err) return [err];
-//   // if (err) return [pe(err)];
-
-//   return [null, res];
-// };
-
 module.exports.eRe = function(res, err, code) {
   // Error Web Response
   let error = err;
@@ -79,18 +50,4 @@ module.exports.tErr = function(errMessage, log) {
   }
 
   throw new Error(errMessage);
-};
-
-module.exports.chain = (promises, cb) => {
-  promises
-    .reduce(async (previousPromises, next) => {
-      await previousPromises;
-      return next;
-    }, Promise.resolve())
-    .then(() => {
-      cb();
-    })
-    .catch(e => {
-      console.log('chain promises failed.', e);
-    });
 };

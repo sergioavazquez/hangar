@@ -1,7 +1,7 @@
 const express = require('express');
 const passport = require('passport');
-// Controllers
 const swaggerUi = require('swagger-ui-express');
+// Controllers
 const UserController = require('../components/users/user.controller');
 const NoteController = require('../components/notes/note.controller');
 const HomeController = require('../controllers/home.controller');

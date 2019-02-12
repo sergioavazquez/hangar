@@ -8,9 +8,9 @@
     "start": "NODE_ENV=prod node ./src/bin/www",
     "dev": "NODE_ENV=dev nodemon --inspect=0.0.0.0 ./src/bin/www",
     "lint": "eslint ./src --fix",
-    "test": "NODE_ENV=test jest int --runInBand --detectOpenHandles",
-    "test_unit": "NODE_ENV=test jest unit --detectOpenHandles",
-    "test_dev": "node --inspect-brk=0.0.0.0 node_modules/.bin/jest --runInBand --detectOpenHandles"
+    "test:int": "NODE_ENV=test jest int --runInBand --detectOpenHandles",
+    "test:unit": "NODE_ENV=test jest unit --detectOpenHandles",
+    "test:dev": "node --inspect-brk=0.0.0.0 node_modules/.bin/jest --runInBand --detectOpenHandles"
   },
   "repository": {
     "type": "git",
@@ -20,8 +20,8 @@
   "license": "ISC",
   "homepage": "https://bitbucket.org/Sergio-Vazquez/hangar#readme",
   "dependencies": {
-    "awilix": "^4.1.0",
-    "bcrypt": "^3.0.3",
+    "awilix": "^4.2.0",
+    "bcrypt": "^3.0.4",
     "bcrypt-promise": "^2.0.0",
     "body-parser": "^1.18.3",
     "cors": "^2.8.5",
@@ -29,29 +29,30 @@
     "dotenv": "^6.2.0",
     "express": "^4.16.4",
     "jsonwebtoken": "^8.4.0",
-    "mongoose": "^5.4.1",
+    "meeseeks-js": "0.0.4",
+    "mongoose": "^5.4.11",
     "mongoose-validator": "^2.1.0",
     "morgan": "^1.9.1",
     "passport": "^0.4.0",
     "passport-jwt": "^4.0.0",
     "serve-favicon": "^2.5.0",
     "swagger-ui-express": "^4.0.2",
-    "validator": "^10.10.0"
+    "validator": "^10.11.0"
   },
   "devDependencies": {
-    "eslint": "^5.11.1",
+    "eslint": "^5.13.0",
     "eslint-config-airbnb": "^17.1.0",
-    "eslint-config-prettier": "^3.3.0",
-    "eslint-plugin-import": "^2.14.0",
-    "eslint-plugin-jest": "^22.1.3",
+    "eslint-config-prettier": "^4.0.0",
+    "eslint-plugin-import": "^2.16.0",
+    "eslint-plugin-jest": "^22.2.2",
     "eslint-plugin-node": "^8.0.1",
     "eslint-plugin-prettier": "^3.0.1",
     "eslint-plugin-security": "^1.4.0",
-    "jest": "^23.6.0",
-    "nodemon": "^1.18.9",
-    "prettier": "^1.15.3",
+    "jest": "^24.1.0",
+    "nodemon": "^1.18.10",
+    "prettier": "^1.16.4",
     "superagent": "^4.1.0",
-    "supertest": "^3.3.0"
+    "supertest": "^3.4.2"
   },
   "engines": {
     "node": ">=10.14.0"

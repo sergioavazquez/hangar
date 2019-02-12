@@ -1,6 +1,7 @@
 // const User = require('./user.model');
+const { to } = require('meeseeks-js');
 const authService = require('./auth.service');
-const { to, eRe, sRe } = require('../../utils/util.service');
+const { eRe, sRe } = require('../../utils/util.service');
 
 const create = async function(req, res) {
   res.setHeader('Content-Type', 'application/json');

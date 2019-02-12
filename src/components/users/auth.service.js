@@ -1,6 +1,7 @@
 const validator = require('validator');
+const { to } = require('meeseeks-js');
 const User = require('./user.model');
-const { to, tErr } = require('../../utils/util.service');
+const { tErr } = require('../../utils/util.service');
 const CONFIG = require('../../config/config');
 
 const getUniqueKeyFromBody = function(body) {

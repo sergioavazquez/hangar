@@ -3,6 +3,6 @@ version: '3'
 services:
   server:
     restart: "no"
-  database:
+  hangar_db:
     restart: "no"
     command: "mongod --dbpath /test/db --smallfiles"

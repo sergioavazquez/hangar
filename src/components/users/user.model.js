@@ -3,7 +3,8 @@ const bcrypt = require('bcrypt');
 const bcryptP = require('bcrypt-promise');
 const jwt = require('jsonwebtoken');
 const validate = require('mongoose-validator');
-const { tErr, to } = require('../../utils/util.service');
+const { to } = require('meeseeks-js');
+const { tErr } = require('../../utils/util.service');
 const CONFIG = require('../../config/config');
 
 const UserSchema = mongoose.Schema(

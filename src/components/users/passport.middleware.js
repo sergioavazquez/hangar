@@ -1,7 +1,7 @@
 const { ExtractJwt, Strategy } = require('passport-jwt');
+const { to } = require('meeseeks-js');
 const User = require('./user.model');
 const CONFIG = require('../../config/config');
-const { to } = require('../../utils/util.service');
 
 module.exports = function(passport) {
   const opts = {};
