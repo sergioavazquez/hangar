@@ -1,15 +1,17 @@
 # Initial docker image
 FROM node:10.14
 # Create user and group and use them
-RUN groupadd -r nodejs && useradd -m -r -g nodejs nodejs
+RUN mkdir -p /home/node/app/node_modules && chown -R node:node /home/node/app
 
 # Container internal path.
-WORKDIR /usr/src/app
+WORKDIR /home/node/app
 # Copy project's package.json to workdir to install dependencies
-COPY package.json ./
+COPY package*.json ./
+USER node
+
 RUN npm install
 
-USER nodejs
+COPY --chown=node:node . .
 
 EXPOSE 3000
 
