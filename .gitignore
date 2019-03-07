@@ -4,4 +4,5 @@ node_modules
 database/mongo_db
 database/mongo_db_test
 database/logs
+nginx/log/*
 .DS_Store

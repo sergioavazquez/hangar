@@ -1,13 +1,17 @@
 version: '3'
 
 services:
-  server:
-    container_name: server
+  hangar_server:
+    container_name: hangar_server
     restart: always
-    build: .
-    ports:
-      - 3000:3000
-      - 9229:9229
+    build:
+      context: .
+      dockerfile: Dockerfile
+    # ports:
+    #   - 3000:3000
+    #   - 9229:9229
+    networks:
+      - hangar-network
     volumes:
       - .:/home/node/app
       - /home/node/app/node_modules
@@ -43,4 +47,43 @@ services:
       - ./database/scripts:/docker-entrypoint-initdb.d/
     ports:
       - "27017:27017"
+    networks:
+      - hangar-network
     command: "mongod --smallfiles"
+
+  hangar_nginx:
+    image: nginx:mainline-alpine
+    container_name: hangar_nginx
+    restart: unless-stopped
+    ports:
+      - "4000:4000"
+    volumes:
+      - web-root:/var/www/html
+      - ./nginx/nginx-conf:/etc/nginx/conf.d
+      - ./nginx/log:/var/log/nginx
+      - certbot-etc:/etc/letsencrypt
+      - certbot-var:/var/lib/letsencrypt
+    depends_on:
+      - hangar_server
+    networks:
+      - hangar-network
+
+  # certbot:
+  #   image: certbot/certbot
+  #   container_name: certbot
+  #   volumes:
+  #     - certbot-etc:/etc/letsencrypt
+  #     - certbot-var:/var/lib/letsencrypt
+  #     - web-root:/var/www/html
+  #   depends_on:
+  #     - hangar_nginx
+  #   command: certonly --webroot --webroot-path=/var/www/html --email sammy@example.com --agree-tos --no-eff-email --staging -d example.com  -d www.example.com 
+
+networks:
+  hangar-network:
+    driver: bridge
+
+volumes:
+  certbot-etc:
+  certbot-var:
+  web-root:
