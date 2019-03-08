@@ -8,6 +8,7 @@ const { Store } = require('meeseeks-js');
 const v1 = require('./routes/v1');
 const db = require('./db'); // Database
 const CONFIG = require('./config/config');
+const winston = require('./config/winston');
 const { eRe } = require('./utils/util.service');
 
 const app = express();
@@ -16,7 +17,8 @@ if (process.env.NODE_ENV !== 'test') {
   db().connect();
 }
 
-app.use(logger('dev'));
+app.use(logger('dev')); // Console logs
+app.use(logger('combined', { stream: winston.stream })); // File logs
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
@@ -55,6 +57,10 @@ app.route('/').all((req, res) => {
   });
 });
 
+app.route('/fail').all(() => {
+  throw new Error();
+});
+
 // catch 404 and forward to error handler
 app.use((req, res) => {
   const err = new Error('Not Found');
@@ -63,7 +69,7 @@ app.use((req, res) => {
 });
 
 // error handler
-app.use((err, req, res) => {
+app.use((err, req, res, next) => {
   // set locals, only providing error in development
   res.locals.message = err.message;
   if (process.env.NODE_ENV === 'dev' || process.env.NODE_ENV === 'test') {
@@ -71,16 +77,28 @@ app.use((err, req, res) => {
   } else {
     res.locals.error = {};
   }
+
+  console.log('handled');
+  // log errors to file
+  winston.error(
+    `${err.status || 500} - ${err.message} - ${req.originalUrl} - ${
+      req.method
+    } - ${req.ip}`
+  );
+
   // render the error page
   res.status(err.status || 500);
   res.render('error');
+  next(err);
 });
 
 process.on('unhandledRejection', error => {
+  console.log('unhandled rej');
   throw new Error(error);
 });
 
 process.on('uncaughtException', error => {
+  console.log('unhandled err');
   // errorManagement.handler.handleError(error);
   // if(!errorManagement.handler.isTrustedError(error))
   throw new Error(error);

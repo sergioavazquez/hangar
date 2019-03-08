@@ -37,7 +37,8 @@
     "passport-jwt": "^4.0.0",
     "serve-favicon": "^2.5.0",
     "swagger-ui-express": "^4.0.2",
-    "validator": "^10.11.0"
+    "validator": "^10.11.0",
+    "winston": "^3.2.1"
   },
   "devDependencies": {
     "eslint": "^5.13.0",

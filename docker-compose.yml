@@ -59,8 +59,8 @@ services:
       - "4000:4000"
     volumes:
       - web-root:/var/www/html
-      - ./nginx/nginx-conf:/etc/nginx/conf.d
-      - ./nginx/log:/var/log/nginx
+      - ./src/config/nginx/nginx-conf:/etc/nginx/conf.d
+      - ./logs/nginx:/var/log/nginx
       - certbot-etc:/etc/letsencrypt
       - certbot-var:/var/lib/letsencrypt
     depends_on:
