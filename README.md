@@ -53,6 +53,7 @@ cd path/to/repository/root
 
 docker-compose build
 ```
+
 ### run_docker
 
 `run_docker` is a small bash script that allows you to execute a command as if you were inside the container.
@@ -63,6 +64,10 @@ Build for production: `./run_docker.sh 'npm start'`
 
 You can also execute any other command on the shell such as `ls -la` to retrieve a list of
 container elements.
+
+Remember to stop containers after stopping them with `ctrl + C`, by running:
+
+`docker-compose down`
 
 __Debugging docker container__
 

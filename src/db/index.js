@@ -1,13 +1,13 @@
-const mongoose = require('mongoose');
-const CONFIG = require('../config/config');
-const { cColors } = require('../utils/util.service');
+const mongoose = require("mongoose");
+const CONFIG = require("../config/config");
+const { cColors } = require("../utils/util.service");
 
 /**
  * This service connects to MongoDB using Mongoose and hooks up all listeners.
  */
 mongoose.Promise = global.Promise; // set mongo up to use promises
-mongoose.set('useCreateIndex', true); // Avoids deprecation warning for ensureIndex()
-mongoose.set('useNewUrlParser', true); // Avoids deprecation warning for urlParser
+mongoose.set("useCreateIndex", true); // Avoids deprecation warning for ensureIndex()
+mongoose.set("useNewUrlParser", true); // Avoids deprecation warning for urlParser
 
 const mongoUri = `mongodb://${CONFIG.db_host}:${CONFIG.db_port}/${
   CONFIG.db_name
@@ -17,7 +17,7 @@ const { connection } = mongoose;
 
 const options = {
   user: CONFIG.db_user,
-  pass: CONFIG.db_password,
+  pass: CONFIG.db_password
 };
 
 const connect = () =>
@@ -32,7 +32,7 @@ const connect = () =>
 
 const disconnect = () => {
   mongoose.disconnect().catch(err => {
-    console.log(cColors.fgRed, 'Mongo disconnect failed', cColors.reset);
+    console.log(cColors.fgRed, "Mongo disconnect failed", cColors.reset);
     console.log(`Mongo connect error: ${err}`);
   });
 };
@@ -47,20 +47,20 @@ const dbErrorHandler = (error, reconnect) => {
     knownError = true;
     console.log(
       cColors.fgCyan,
-      '----- Waiting For Database -----',
+      "----- Waiting For Database -----",
       cColors.reset
     );
     setTimeout(reconnect, 5000);
   }
 
   if (!knownError) {
-    console.log(cColors.fgYellow, '----- MongoDb Error -----', cColors.reset);
-    console.log('error', error);
-    console.log(cColors.fgYellow, '------- End Error -------', cColors.reset);
+    console.log(cColors.fgYellow, "----- MongoDb Error -----", cColors.reset);
+    console.log("error", error);
+    console.log(cColors.fgYellow, "------- End Error -------", cColors.reset);
   }
 };
 
-connection.once('open', () => {
+connection.once("open", () => {
   console.log(
     cColors.fgCyan,
     `----- Connected to: ${mongoUri} ----`,
@@ -68,23 +68,26 @@ connection.once('open', () => {
   );
 });
 
-connection.on('error', error => {
+connection.on("error", error => {
   dbErrorHandler(error, connect);
 });
 
-connection.on('disconnected', () => {
-  console.log(
-    cColors.fgCyan,
-    '----- Database Disconnected -----',
-    cColors.reset
-  );
-});
+if (process.env.NODE_ENV !== "test") {
+  // Avoids Jest throwing an error when db is disconnected after tests.
+  connection.on("disconnected", () => {
+    console.log(
+      cColors.fgCyan,
+      "----- Database Disconnected -----",
+      cColors.reset
+    );
+  });
+}
 
-process.on('SIGINT', () => {
+process.on("SIGINT", () => {
   connection.close(() => {
     console.log(
       cColors.fgCyan,
-      '----- Closed DB due app closing -----',
+      "----- Closed DB due app closing -----",
       cColors.reset
     );
   });
@@ -94,7 +97,7 @@ function dbInterface() {
   return {
     connection,
     connect,
-    disconnect,
+    disconnect
   };
 }
 
