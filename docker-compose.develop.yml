@@ -7,21 +7,19 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    # ports:
-    #   - 3000:3000
-    #   - 9229:9229
+    ports:
+      - 3000:3000
+      - 9229:9229
     networks:
       - hangar-network
     volumes:
       - .:/home/node/app
       - /home/node/app/node_modules
-      # - ${DB_LOG_DIR}:/usr/src/app/database/logs/
     depends_on: [hangar_db]
     links:
       - hangar_db
     command: ${COMMAND_PARAMS}
-    # command: ["npm", "start"]
-    # command: ["npm", "run", "build"]
+
   hangar_db:
     container_name: hangar_db
     image: mongo:4
@@ -38,47 +36,16 @@ services:
       - TEST_MONGO_DB=${DB_TEST_NAME}
       - TEST_MONGO_USER=${DB_TEST_USER}
       - TEST_MONGO_PASS=${DB_TEST_PASS}
-    # user: ${CURRENT_UID}
     restart: always
     volumes:
       - ${DB_DATA_DIR}:/data/db
       - ${DB_TEST_DIR}:/test/db
-      # - ${DB_LOG_DIR}:/var/log/
       - ./database/scripts:/docker-entrypoint-initdb.d/
     ports:
       - "27017:27017"
     networks:
       - hangar-network
     command: "mongod --smallfiles"
-
-  hangar_nginx:
-    image: nginx:mainline-alpine
-    container_name: hangar_nginx
-    restart: unless-stopped
-    ports:
-      - "4000:4000"
-
-    volumes:
-      - web-root:/var/www/html
-      - ./src/config/nginx/nginx-conf:/etc/nginx/conf.d
-      - ./logs/nginx:/var/log/nginx
-      - certbot-etc:/etc/letsencrypt
-      - certbot-var:/var/lib/letsencrypt
-
-    depends_on: [hangar_server]
-    networks:
-      - hangar-network
-
-  # certbot:
-  #   image: certbot/certbot
-  #   container_name: certbot
-  #   volumes:
-  #     - certbot-etc:/etc/letsencrypt
-  #     - certbot-var:/var/lib/letsencrypt
-  #     - web-root:/var/www/html
-  #   depends_on:
-  #     - hangar_nginx
-  #   command: certonly --webroot --webroot-path=/var/www/html --email sammy@example.com --agree-tos --no-eff-email --staging -d example.com  -d www.example.com 
 
 networks:
   hangar-network:
