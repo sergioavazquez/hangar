@@ -35,6 +35,32 @@ then
     exit
 fi
 
+if [[ "${COMMAND}" = '-dev' ]];
+then
+    echo " ----- run_docker ----- "
+    echo " Running in dev mode "
+    echo " ---------------------- "
+    echo " Press ctrl+c to close "
+    echo " ---------------------- "
+    COMMAND='npm run dev'
+    echo "Running docker-compose with ""${COMMAND}"
+    COMMAND_PARAMS=${COMMAND} docker-compose -f docker-compose.develop.yml up
+    exit
+fi
+
+if [[ "${COMMAND}" = '-start' ]];
+then
+    echo " ----- run_docker ----- "
+    echo " Running in production mode "
+    echo " ---------------------- "
+    echo " Press ctrl+c to close "
+    echo " ---------------------- "
+    COMMAND='npm start'
+    echo "Running docker-compose with ""${COMMAND}"
+    COMMAND_PARAMS=${COMMAND} docker-compose up
+    exit
+fi
+
 if [[ "${COMMAND}" = '-test_u' ]];
 then
     echo " ----- run_docker ----- "

@@ -1,7 +1,5 @@
 const request = require('supertest');
 const app = require('../app');
-// const db = require('./db'); // Database
-// const CONFIG = require('../config/config');
 
 const { container } = app.locals;
 const db = container.resolve('db');

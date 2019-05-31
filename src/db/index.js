@@ -72,13 +72,16 @@ connection.on('error', error => {
   dbErrorHandler(error, connect);
 });
 
-connection.on('disconnected', () => {
-  console.log(
-    cColors.fgCyan,
-    '----- Database Disconnected -----',
-    cColors.reset
-  );
-});
+if (process.env.NODE_ENV !== 'test') {
+  // Avoids Jest throwing an error when db is disconnected after tests.
+  connection.on('disconnected', () => {
+    console.log(
+      cColors.fgCyan,
+      '----- Database Disconnected -----',
+      cColors.reset
+    );
+  });
+}
 
 process.on('SIGINT', () => {
   connection.close(() => {
