@@ -7,21 +7,17 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    # ports:
-    #   - 3000:3000
-    #   - 9229:9229
+
     networks:
       - hangar-network
     volumes:
       - .:/home/node/app
       - /home/node/app/node_modules
-      # - ${DB_LOG_DIR}:/usr/src/app/database/logs/
     depends_on: [hangar_db]
     links:
       - hangar_db
     command: ${COMMAND_PARAMS}
-    # command: ["npm", "start"]
-    # command: ["npm", "run", "build"]
+
   hangar_db:
     container_name: hangar_db
     image: mongo:4
