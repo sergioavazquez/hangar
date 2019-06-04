@@ -4,7 +4,6 @@ const swaggerUi = require('swagger-ui-express');
 // Controllers
 const UserController = require('../components/users/user.controller');
 const NoteController = require('../components/notes/note.controller');
-const HomeController = require('../controllers/home.controller');
 // Middleware
 const appendJwtStrategyTo = require('../components/users/passport.middleware');
 const noteMiddleware = require('../components/notes/note.middleware');
@@ -71,12 +70,6 @@ router.delete(
   passport.authenticate('jwt', { session: false }),
   noteMiddleware.checkUp,
   NoteController.remove
-);
-
-router.get(
-  '/dash',
-  passport.authenticate('jwt', { session: false }),
-  HomeController.Dashboard
 );
 
 // -------------- API Documentation ----------------

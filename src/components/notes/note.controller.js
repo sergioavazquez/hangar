@@ -1,9 +1,9 @@
-const { to } = require('meeseeks-js');
-const Note = require('./note.model');
-const { eRe, sRe } = require('../../utils/util.service');
+const { to } = require("meeseeks-js");
+const Note = require("./note.model");
+const { eRe, sRe } = require("../../utils/util.service");
 
 const create = async function(req, res) {
-  res.setHeader('Content-Type', 'application/json');
+  res.setHeader("Content-Type", "application/json");
   const { user } = req;
 
   const noteInfo = req.body;
@@ -17,10 +17,10 @@ const create = async function(req, res) {
 module.exports.create = create;
 
 const getAll = async function(req, res) {
-  res.setHeader('Content-Type', 'application/json');
+  res.setHeader("Content-Type", "application/json");
   const { user } = req;
 
-  const [err, notes] = await to(Note.find({ 'users.user': user._id }));
+  const [err, notes] = await to(Note.find({ "users.user": user._id }));
   if (err) return eRe(res, err, 422);
 
   const notesJson = notes.map(note => note.toWeb());
@@ -30,14 +30,14 @@ const getAll = async function(req, res) {
 module.exports.getAll = getAll;
 
 const get = function(req, res) {
-  res.setHeader('Content-Type', 'application/json');
+  res.setHeader("Content-Type", "application/json");
   const { note } = req;
   return sRe(res, { note: note.toWeb() });
 };
 module.exports.get = get;
 
 const update = async function(req, res) {
-  res.setHeader('Content-Type', 'application/json');
+  res.setHeader("Content-Type", "application/json");
   const { body, note } = req;
   note.set(body);
 
@@ -50,12 +50,12 @@ const update = async function(req, res) {
 module.exports.update = update;
 
 const remove = async function(req, res) {
-  res.setHeader('Content-Type', 'application/json');
+  res.setHeader("Content-Type", "application/json");
   const { note } = req;
 
   const [err] = await to(note.remove());
-  if (err) return eRe(res, 'error occured trying to delete the note');
+  if (err) return eRe(res, "An error occured trying to delete the note");
 
-  return sRe(res, { message: 'Deleted note' }, 204);
+  return sRe(res, { message: "Note deleted" }, 204);
 };
 module.exports.remove = remove;
