@@ -212,6 +212,17 @@ __Removing ESLint__
 In order to keep hot reload with eslint in development, `nodemon.json` is used to set which scripts to run when starting or restarting nodemon. To avoid linting during development just edit the file as needed.
 By default `lint` script in `package.json` is set with `--fix` flag. Remove it to avoid autofixing.
 
+__Demo API__
+
+Test API beyond localhost using ssh port forwarding via [Serveo](https://serveo.net/)
+
+```
+ssh -o ServerAliveInterval=60 -R example:80:localhost:4000 serveo.net
+```
+
+This will forward incoming requests to `https://example.serveo.net` (port 80) to `localhost:4000`.
+
+
 ## Documentation
 
 __Basic API Docs__
