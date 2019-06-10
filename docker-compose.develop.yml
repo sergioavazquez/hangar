@@ -1,24 +1,29 @@
-version: '3'
+version: '3.5'
 
 services:
   hangar_server:
     container_name: hangar_server
     restart: always
+    ports:
+      - "4000:3000"
+      - "9229:9229"
     build:
       context: .
       dockerfile: Dockerfile
-    ports:
-      - 3000:3000
-      - 9229:9229
     networks:
       - hangar-network
+    healthcheck:
+      test: ["CMD", "nc", "-z", "localhost", "3000"]
+      timeout: 45s
+      interval: 10s
+      retries: 10
     volumes:
       - .:/home/node/app
       - /home/node/app/node_modules
     depends_on: [hangar_db]
     links:
       - hangar_db
-    command: ${COMMAND_PARAMS}
+    command: ./wait-for-it.sh hangar_db:27017 -- ${COMMAND_PARAMS}
 
   hangar_db:
     container_name: hangar_db
@@ -45,6 +50,11 @@ services:
       - "27017:27017"
     networks:
       - hangar-network
+    healthcheck:
+      test: ["CMD", "nc", "-z", "localhost", "27017"]
+      timeout: 45s
+      interval: 10s
+      retries: 10
     command: "mongod --smallfiles"
 
 networks:

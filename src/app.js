@@ -34,9 +34,6 @@ container.register({
 
 app.locals.container = container;
 
-// Log Env
-console.log('Environment (dev - prod - test):', process.env.NODE_ENV);
-
 // CORS
 app.use(cors());
 

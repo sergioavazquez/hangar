@@ -54,8 +54,8 @@ const remove = async function(req, res) {
   const { note } = req;
 
   const [err] = await to(note.remove());
-  if (err) return eRe(res, 'error occured trying to delete the note');
+  if (err) return eRe(res, 'An error occured trying to delete the note');
 
-  return sRe(res, { message: 'Deleted note' }, 204);
+  return sRe(res, { message: 'Note deleted' }, 204);
 };
 module.exports.remove = remove;

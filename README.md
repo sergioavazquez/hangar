@@ -11,7 +11,29 @@ Stack consists of ExpressJS server with MongoDB as database.
 
 ## Getting Started
 
-Define a `.env` file. Copy `example.env` as template.
+Create a `.env` file using `example.env` as template.
+
+__.env variables:__
+
+`APP` Name of the app.
+
+`SERVER_PORT` Express server port. Used internally. (default: 3000)
+
+`HANGAR_PORT` Port used to connect to the API. (default: 4000)
+
+Warning: Changing port configuration in `.env` without updating Dockerfile and docker-compose accordingly will break the app.
+
+_Mongo root access:_
+
+For security reasons a mongo admin user is created along with the database to administrate the it.
+
+`MONGO_ROOT_USERNAME` mongo's admin user.
+
+`MONGO_ROOT_PASSWORD` mongo's admin pass.
+
+If working within docker container `DB_HOST` needs to be the same as docker-compose MongoDB service. By default it's `hangar_db`. (Check `docker-compose.yml` files. If you need to change the name keep in mind there are several docker-compose files depending on environment)
+
+If running outside docker, `DB_HOST` should be `localhost`.
 
 Production db settings are:
 
@@ -38,10 +60,6 @@ Default database locations are:
 `DB_DATA_DIR`=./database/mongo_db/
 
 `DB_TEST_DIR`=./database/mongo_db_test/
-
-If working within docker container `DB_HOST` needs to be the same as docker-compose MongoDB service. By default it's `hangar_db`. (Check `docker-compose.yml` files. If you need to change the name keep in mind there are several docker-compose files depending on environment)
-
-If running locally, `DB_HOST` should be `localhost`.
 
 The following fileds are self explanatory and are used to create a user when running integration tests.
 
@@ -120,7 +138,7 @@ It also attaches an inspector for debugging in Chrome.
 
 Containers used: `hangar_server`, `hangar_db`
 
-port exposed: 3000
+port exposed: 4000
 
 ## Production
 
@@ -129,7 +147,7 @@ Production build uses `nginx` as a reverse proxy.
 
 Containers used: `hangar_server`, `hangar_db`, `hangar_nginx`.
 
-port exposed: 4000
+port exposed: 80
 
 ## Testing
 
@@ -144,7 +162,6 @@ __Running tests:__
 Run integration tests: `./run_docker.sh -test`
 
 Run unit tests: `./run_docker.sh -test_u`
-
 
 Run tests in debug mode: `./run_docker.sh -test_d`
 
@@ -172,6 +189,23 @@ NGINX is used as a reverse proxy on production setup: `docker-compose.yml`
 Configuration file is available here: `./src/config/nginx/nginx.conf`
 
 ## Useful Info:
+
+__Debugging NodeJS Application__
+
+Run: `./run_docker.sh -dev`
+
+Open Chrome and paste the web socket address exposed by the debugger:
+
+![debug-nodejs](./docs/debug_NodeJS.png "Hangar docs")
+
+In this case:
+```
+0.0.0.0:9229/7f754516-b715-494b-8d5f-2fea4ca7c533
+```
+
+Open Chrome devTools and click on the node icon located on the upper left corner.
+
+That's it, you should be able to debug the entire app from the devTools window that pops up.
 
 __Debugging docker container__
 
@@ -212,13 +246,24 @@ __Removing ESLint__
 In order to keep hot reload with eslint in development, `nodemon.json` is used to set which scripts to run when starting or restarting nodemon. To avoid linting during development just edit the file as needed.
 By default `lint` script in `package.json` is set with `--fix` flag. Remove it to avoid autofixing.
 
+__Demo API__
+
+Test API beyond localhost using ssh port forwarding via [Serveo](https://serveo.net/)
+
+```
+ssh -o ServerAliveInterval=60 -R example:80:localhost:4000 serveo.net
+```
+
+This will forward incoming requests to `https://example.serveo.net` (port 80) to `localhost:4000`.
+
+
 ## Documentation
 
 __Basic API Docs__
 
 Here are a few examples on how to use the API.
 
-Keep in mind that depending on build, `production` or `dev` port can be either `4000` or `3000` respectively.
+Keep in mind that depending on build, `production` or `dev` port can be either `80` or `4000` respectively.
 
 Headers for request:
 
@@ -228,7 +273,7 @@ Headers for request:
 
 A few endpoints:
 
-`POST localhost:3000/v1/users/`
+`POST localhost:4000/v1/users/`
 
 ```
 {
@@ -239,7 +284,7 @@ A few endpoints:
 }
 ```
 
-`POST localhost:3000/v1/users/login`
+`POST localhost:4000/v1/users/login`
 
 ```
 {
@@ -248,14 +293,14 @@ A few endpoints:
 }
 ```
 
-`POST localhost:3000/v1/notes`
+`POST localhost:4000/v1/notes`
 ```
 {
 	"title":"Note title",
 	"body": "Note content"
 }
 ```
-`GET localhost:3000/v1/notes`
+`GET localhost:4000/v1/notes`
 
 API docs are here:  `0.0.0.0:4000/v1/docs/`
 
