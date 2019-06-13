@@ -25,8 +25,8 @@ server {
 
         server_tokens off;
 
-        ssl_certificate /etc/letsencrypt/live/example.com/fullchain.pem;
-        ssl_certificate_key /etc/letsencrypt/live/example.com/privkey.pem;
+        ssl_certificate /etc/letsencrypt/live/savaz.com.ar/fullchain.pem;
+        ssl_certificate_key /etc/letsencrypt/live/savaz.com.ar/privkey.pem;
 
         ssl_buffer_size 8k;
 
