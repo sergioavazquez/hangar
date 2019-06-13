@@ -73,7 +73,7 @@ services:
       - ./logs/nginx:/var/log/nginx
       - certbot-etc:/etc/letsencrypt
       - certbot-var:/var/lib/letsencrypt
-      - dhparam:/etc/ssl/certs
+      - ./cert/dhparam:/etc/ssl/certs
 
     depends_on: [hangar_server]
     networks:
@@ -91,10 +91,4 @@ volumes:
     driver_opts:
       type: none
       device: $PWD/cert
-      o: bind
-  dhparam:
-    driver: local
-    driver_opts:
-      type: none
-      device: $PWD/cert/dhparam
       o: bind
