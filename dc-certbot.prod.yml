@@ -1,0 +1,5 @@
+version: '3.5'
+
+services:
+  certbot:
+    command: certonly --webroot --webroot-path=/var/www/html --email ${DOMAIN_EMAIL} --agree-tos --no-eff-email --force-renewal -d ${APP_DOMAIN}  -d www.${APP_DOMAIN}

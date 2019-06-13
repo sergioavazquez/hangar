@@ -63,6 +63,8 @@ services:
     restart: unless-stopped
     ports:
       - "80:4000"
+    environment:
+      - APP_DOMAIN=${APP_DOMAIN}
 
     volumes:
       - web-root:/var/www/html
@@ -74,17 +76,6 @@ services:
     depends_on: [hangar_server]
     networks:
       - hangar-network
-
-  certbot:
-    image: certbot/certbot
-    container_name: hangar_certbot
-    volumes:
-      - certbot-etc:/etc/letsencrypt
-      - certbot-var:/var/lib/letsencrypt
-      - web-root:/var/www/html
-    depends_on:
-      - hangar_nginx
-    command: certonly --webroot --webroot-path=/var/www/html --email sergioavazquez@gmail.com --agree-tos --no-eff-email --staging -d savaz.com.ar  -d www.savaz.com.ar
 
 networks:
   hangar-network:

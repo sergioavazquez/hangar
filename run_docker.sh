@@ -42,6 +42,37 @@ then
     exit
 fi
 
+if [[ "${COMMAND}" = '--start' ]];
+then
+    echo " ----- run_docker ----- "
+    echo " Running in production mode "
+    echo " Docker will run as daemon. "
+    echo " ---------------------- "
+    echo " List running containers: "
+    echo " docker ps "
+    echo " ---------------------- "
+    echo " Stop running containers: "
+    echo " docker-compose stop "
+    echo " ---------------------- "
+    COMMAND='npm start'
+    echo "Running docker-compose with ""${COMMAND}"
+    COMMAND_PARAMS=${COMMAND} docker-compose -f up
+    exit
+fi
+
+if [[ "${COMMAND}" = '--cert-stage' ]];
+then
+    echo " ----- run_docker ----- "
+    echo " Running certbot stage test "
+    echo " ---------------------- "
+    echo " Press ctrl+c to close "
+    echo " ---------------------- "
+    COMMAND='npm start'
+    echo "Running docker-compose with ""${COMMAND}"
+    COMMAND_PARAMS=${COMMAND} docker-compose -f docker-compose.yml -f docker-compose.certbot.yml -f dc-certbot.stage.yml up
+    exit
+fi
+
 if [[ "${COMMAND}" = '-test' ]];
 then
     echo " ----- run_docker ----- "

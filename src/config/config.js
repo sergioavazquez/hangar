@@ -3,6 +3,7 @@ require('dotenv').config(); // instatiate environment variables
 const CONFIG = {}; // Make this global to use all over the application
 
 CONFIG.app = process.env.APP || 'NoName';
+CONFIG.app_domain = process.env.APP_DOMAIN || 'example.com';
 CONFIG.server_port = process.env.SERVER_PORT || '3000';
 CONFIG.hangar_port = process.env.HANGAR_PORT || '4000';
 

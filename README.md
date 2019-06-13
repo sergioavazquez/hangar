@@ -308,6 +308,9 @@ This is how they look:
 
 ![hangar-docs](./docs/hangar-swagger-doc-example.png "Hangar docs")
 
+## Lets Encrypt Certbot
+
+`docker-compose exec hangar_nginx ls -la /etc/letsencrypt/live`
 
 ## Technologies:
 - [NodeJS](https://nodejs.org/en/)
