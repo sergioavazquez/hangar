@@ -44,15 +44,8 @@ app.use(cors());
 // });
 
 // Router
-app.use('/v1', v1);
-
-app.route('/').all((req, res) => {
-  res.json({
-    status: 'success',
-    message: 'Hangar API root',
-    data: { version_number: 'v0.0.1' },
-  });
-});
+app.use('/v1', v1); // Api routes
+app.use('/', express.static('/var/www/html/')); // web_root
 
 app.route('/fail').all(() => {
   throw new Error();

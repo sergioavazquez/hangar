@@ -20,6 +20,7 @@ services:
     volumes:
       - .:/home/node/app
       - /home/node/app/node_modules
+      - web-root:/var/www/html
     depends_on: [hangar_db]
     links:
       - hangar_db
@@ -68,5 +69,5 @@ volumes:
     driver: local
     driver_opts:
       type: none
-      device: $PWD/cert
+      device: $PWD/web_root
       o: bind

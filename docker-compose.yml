@@ -20,6 +20,7 @@ services:
     volumes:
       - .:/home/node/app
       - /home/node/app/node_modules
+      - web-root:/var/www/html
     depends_on: [hangar_db]
     links:
       - hangar_db
@@ -63,17 +64,17 @@ services:
     restart: unless-stopped
     ports:
       - "80:4000"
-      - "443:443"
+      #- "443:443"
     environment:
       - APP_DOMAIN=${APP_DOMAIN}
 
     volumes:
       - web-root:/var/www/html
-      - ./src/config/nginx/nginx-conf:/etc/nginx/conf.d
+      - ./src/config/nginx/conf-http:/etc/nginx/conf.d
       - ./logs/nginx:/var/log/nginx
       - certbot-etc:/etc/letsencrypt
       - certbot-var:/var/lib/letsencrypt
-      - ./cert/dhparam:/etc/ssl/certs
+      - ./web_root/dhparam:/etc/ssl/certs
 
     depends_on: [hangar_server]
     networks:
@@ -90,5 +91,5 @@ volumes:
     driver: local
     driver_opts:
       type: none
-      device: $PWD/cert
+      device: $PWD/web_root
       o: bind
