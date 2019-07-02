@@ -188,6 +188,14 @@ NGINX is used as a reverse proxy on production setup: `docker-compose.yml`
 
 Configuration file is available here: `./src/config/nginx/nginx.conf`
 
+## SSL
+
+For SSL certificate Hangar uses _Let's Encrypt_ certbot.
+
+`sudo openssl dhparam -out /home/sammy/node_project/dhparam/dhparam-2048.pem 2048`
+
+`./run_docker.sh --cert-stage`
+
 ## Useful Info:
 
 __Debugging NodeJS Application__
