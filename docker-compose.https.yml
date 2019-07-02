@@ -13,4 +13,4 @@ services:
       - ./logs/nginx:/var/log/nginx
       - certbot-etc:/etc/letsencrypt
       - certbot-var:/var/lib/letsencrypt
-      - ./web_root/dhparam:/etc/ssl/certs
+      - dhparam:/etc/ssl/certs
