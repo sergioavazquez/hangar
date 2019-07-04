@@ -8,7 +8,7 @@ const NoteController = require('../components/notes/note.controller');
 const appendJwtStrategyTo = require('../components/users/passport.middleware');
 const noteMiddleware = require('../components/notes/note.middleware');
 // Docs
-const swaggerDocument = require('../docs/v1.json');
+const swaggerDocument = require('../docs/v1.js');
 
 // Append passport strategy.
 appendJwtStrategyTo(passport);

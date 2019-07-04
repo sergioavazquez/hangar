@@ -1,8 +1,15 @@
 require('dotenv').config(); // instatiate environment variables
+const APP_CONFIG = require('../../app_definition.json');
 
 const CONFIG = {}; // Make this global to use all over the application
 
-CONFIG.app = process.env.APP || 'NoName';
+CONFIG.app_definition = APP_CONFIG || {};
+CONFIG.getApp = setting => {
+  // eslint-disable-next-line
+  return CONFIG.app_definition[setting] || "Missing app_definition";
+};
+
+CONFIG.hangar_version = process.env.HANGAR_VERSION || '0.0.1';
 CONFIG.app_domain = process.env.APP_DOMAIN || 'example.com';
 CONFIG.server_port = process.env.SERVER_PORT || '3000';
 CONFIG.hangar_port = process.env.HANGAR_PORT || '4000';

@@ -5,7 +5,7 @@ services:
     container_name: hangar_server
     restart: always
     ports:
-      - "4000:3000"
+      - ${HANGAR_PORT}:${SERVER_PORT}
       - "9229:9229"
     build:
       context: .
@@ -24,7 +24,7 @@ services:
     depends_on: [hangar_db]
     links:
       - hangar_db
-    command: ./wait-for-it.sh hangar_db:27017 -- ${COMMAND_PARAMS}
+    command: ./utils/wait-for-it.sh hangar_db:27017 -- ${COMMAND_PARAMS}
 
   hangar_db:
     container_name: hangar_db

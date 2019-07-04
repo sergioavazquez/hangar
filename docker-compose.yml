@@ -24,7 +24,7 @@ services:
     depends_on: [hangar_db]
     links:
       - hangar_db
-    command: ./wait-for-it.sh hangar_db:27017 -- ${COMMAND_PARAMS}
+    command: ./utils/wait-for-it.sh hangar_db:27017 -- ${COMMAND_PARAMS}
 
   hangar_db:
     container_name: hangar_db

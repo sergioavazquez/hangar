@@ -114,12 +114,9 @@ After updating modules specify `no-cache` to force the entire build.
 docker-compose build --no-cache
 ```
 
-### run_docker
+### hangar.sh
 
-`run_docker` is a small bash script that allows you to execute a command as if you were inside the container.
-
-There are predefined commands for development, debugging, testing and production listed below but you can also execute any other command on the shell such as `ls -la` to retrieve a list of
-container elements.
+`hangar.sh` is a small bash script that helps run the project.
 
 Remember to take containers down after stopping them with `ctrl + C`, by running:
 
@@ -131,7 +128,7 @@ If running into problems with previous containers clear docker after taking down
 
 ## Development
 
-For delopment run: `./run_docker.sh -dev`
+For delopment run: `./hangar.sh -dev`
 
 Development uses `docker-compose.develop.yml` which does not include `nginx` as a reverse proxy and uses `nodemon` and `ESlint` for hot reload and linting.
 It also attaches an inspector for debugging in Chrome.
@@ -142,7 +139,7 @@ port exposed: 4000
 
 ## Production
 
-Build for production: `./run_docker.sh -start`
+Build for production: `./hangar.sh -start`
 Production build uses `nginx` as a reverse proxy.
 
 Containers used: `hangar_server`, `hangar_db`, `hangar_nginx`.
@@ -159,11 +156,11 @@ Unit tests: `name.unit.test.js`
 
 __Running tests:__
 
-Run integration tests: `./run_docker.sh -test`
+Run integration tests: `./hangar.sh -test`
 
-Run unit tests: `./run_docker.sh -test_u`
+Run unit tests: `./hangar.sh -test_u`
 
-Run tests in debug mode: `./run_docker.sh -test_d`
+Run tests in debug mode: `./hangar.sh -test_d`
 
 _Runs tests with attached inspector for debugging_
 
@@ -194,13 +191,13 @@ For SSL certificate Hangar uses _Let's Encrypt_ certbot.
 
 `sudo openssl dhparam -out /home/sammy/node_project/dhparam/dhparam-2048.pem 2048`
 
-`./run_docker.sh --cert-stage`
+`./hangar.sh --cert-stage`
 
 ## Useful Info:
 
 __Debugging NodeJS Application__
 
-Run: `./run_docker.sh -dev`
+Run: `./hangar.sh -dev`
 
 Open Chrome and paste the web socket address exposed by the debugger:
 
@@ -219,7 +216,7 @@ __Debugging docker container__
 
 Containers execute and close. If a container execution fails it'll stop, and you can't get shell access to it for debugging.
 
-running: `./run_docker.sh -debug`
+running: `./hangar.sh -debug`
 
 Will keep the container up so you can get access to it.
 
@@ -227,7 +224,7 @@ Open another console and run `docker exec -it <name> sh`
 
 __Debugging MongoDB__
 
-`./run_docker.sh -debug` to initialize all containers.
+`./hangar.sh -debug` to initialize all containers.
 `docker exec -it database sh` will open a shell inside Mongo container.
 `mongo` to access mongo's shell.
 
