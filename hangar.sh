@@ -86,12 +86,6 @@ then
     eval ./utils/build_nginx_conf.sh -http
 fi
 
-# if [[ ! -f ${HTTPS_NGINX_OUTPUT} || -n ${UPDATE_NGINX_CONFIG} ]];
-# then
-#     eval ./utils/build_nginx_conf.sh -https
-# fi
-
-
 if [[ "${COMMAND}" = '-start' ]];
 then
     echo " ----- hangar ----- "
@@ -129,13 +123,10 @@ then
     echo "  docker-compose stop "
     echo " ---------------------- "
     COMMAND='npm start'
-    exit
     echo "Running docker-compose with ""${COMMAND}"
     COMMAND_PARAMS=${COMMAND} docker-compose -f docker-compose.yml -f docker-compose.https.yml up -d
     exit
 fi
-
-exit
 
 if [[ "${COMMAND}" = '--start' ]];
 then
