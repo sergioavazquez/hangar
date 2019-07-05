@@ -4,9 +4,9 @@ This project provides a starting point for developing a backend API in NodeJS.
 
 As an example a simple [CRUD](https://en.wikipedia.org/wiki/Create,_read,_update_and_delete) notes application is provided.
 
-The application integrates user management via [JWT](https://en.wikipedia.org/wiki/Create,_read,_update_and_delete), integration tests, logs, documentation, a development environment with linting and hot reload and a production environment.
-
 Stack consists of ExpressJS server with MongoDB as database.
+
+The application integrates user management via [JWT](https://en.wikipedia.org/wiki/Create,_read,_update_and_delete), integration tests, logs, documentation, a development environment with linting and hot reload and a production environment.
 
 
 ## Getting Started
@@ -31,9 +31,7 @@ For security reasons a mongo admin user is created along with the database to ad
 
 `MONGO_ROOT_PASSWORD` mongo's admin pass.
 
-If working within docker container `DB_HOST` needs to be the same as docker-compose MongoDB service. By default it's `hangar_db`. (Check `docker-compose.yml` files. If you need to change the name keep in mind there are several docker-compose files depending on environment)
-
-If running outside docker, `DB_HOST` should be `localhost`.
+`DB_HOST` needs to be the same as docker-compose MongoDB service. By default it's `hangar_db`. (Check `docker-compose.yml` files. If you need to change the name keep in mind there are several docker-compose files depending on environment)
 
 Production db settings are:
 
@@ -79,27 +77,14 @@ Remember changing `JWT_ENCRYPTION` string which is used as a secret by Passport 
 
 `AUTH_UNIQUE_KEY` is the unique field used for user registration.
 
+## Requirements
 
-## Usage without Docker
-```
-clone or fork repository
+1 - [Install Docker](https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-on-ubuntu-18-04).
 
-cd path/to/repository/root
+2 - [Install Docker-compose](https://www.digitalocean.com/community/tutorials/how-to-install-docker-compose-on-ubuntu-18-04).
 
-npm install
-```
+## Installation
 
-For development run: `npm run dev`
-
-It has linting and hot reload.
-
-For production: `npm start`
-
-
-
-## Usage with Docker
-
-Install [Docker](https://docs.docker.com/install/)
 ```
 clone or fork repository
 
