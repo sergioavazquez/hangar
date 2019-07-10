@@ -47,10 +47,6 @@ app.use(cors());
 app.use('/v1', v1); // Api routes
 app.use('/', express.static('/var/www/html/')); // web_root
 
-app.route('/fail').all(() => {
-  throw new Error();
-});
-
 // catch 404 and forward to error handler
 app.use((req, res) => {
   const err = new Error('Not Found');
@@ -68,7 +64,6 @@ app.use((err, req, res, next) => {
     res.locals.error = {};
   }
 
-  console.log('handled');
   // log errors to file
   winston.error(
     `${err.status || 500} - ${err.message} - ${req.originalUrl} - ${

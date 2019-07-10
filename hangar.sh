@@ -141,7 +141,7 @@ then
     echo " ---------------------- "
     COMMAND='npm start'
     echo "Running docker-compose with ""${COMMAND}"
-    COMMAND_PARAMS=${COMMAND} docker-compose -f up
+    COMMAND_PARAMS=${COMMAND} docker-compose up
     exit
 fi
 
@@ -168,6 +168,19 @@ then
     COMMAND='npm start'
     echo "Running docker-compose with ""${COMMAND}"
     COMMAND_PARAMS=${COMMAND} docker-compose -f docker-compose.yml -f docker-compose.certbot.yml -f dc-certbot.prod.yml up
+    exit
+fi
+
+if [[ "${COMMAND}" = '--cert-renew' ]];
+then
+    echo " ----- hangar ----- "
+    echo " Running certbot: Renew certificate "
+    echo " ---------------------- "
+    echo " Press ctrl+c to close "
+    echo " ---------------------- "
+    COMMAND='npm start'
+    echo "Running docker-compose with ""${COMMAND}"
+    COMMAND_PARAMS=${COMMAND} docker-compose -f docker-compose.yml -f docker-compose.certbot.yml -f run certbot renew # --dry-run
     exit
 fi
 

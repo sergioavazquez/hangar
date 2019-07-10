@@ -9,6 +9,7 @@ const appendJwtStrategyTo = require('../components/users/passport.middleware');
 const noteMiddleware = require('../components/notes/note.middleware');
 // Docs
 const swaggerDocument = require('../docs/v1.js');
+const CONFIG = require('../config/config');
 
 // Append passport strategy.
 appendJwtStrategyTo(passport);
@@ -19,7 +20,7 @@ router.get('/', (req, res) => {
   res.json({
     status: 'success',
     message: 'Hangar API root',
-    data: { version_number: 'v0.1.0' },
+    data: { version_number: CONFIG.hangar_version },
   });
 });
 // Users

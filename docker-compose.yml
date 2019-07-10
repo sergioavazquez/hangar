@@ -5,7 +5,7 @@ services:
     container_name: hangar_server
     restart: always
     ports:
-      - "3000:3000"
+      - ${SERVER_PORT}:${SERVER_PORT}
     build:
       context: .
       dockerfile: Dockerfile
