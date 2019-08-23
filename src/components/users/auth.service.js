@@ -27,7 +27,7 @@ const createUser = async function(userInfo) {
   if (authInfo.method === 'email') {
     if (validator.isEmail(uniqueKey)) {
       authInfo.email = uniqueKey;
-      const newUser = Object.assign({}, userInfo, authInfo);
+      const newUser = { ...userInfo, ...authInfo };
       const [err, user] = await to(User.create(newUser));
       if (err) tErr('User email is already registered.');
       return user;
