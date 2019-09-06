@@ -9,9 +9,7 @@ mongoose.Promise = global.Promise; // set mongo up to use promises
 mongoose.set('useCreateIndex', true); // Avoids deprecation warning for ensureIndex()
 mongoose.set('useNewUrlParser', true); // Avoids deprecation warning for urlParser
 
-const mongoUri = `mongodb://${CONFIG.db_host}:${CONFIG.db_port}/${
-  CONFIG.db_name
-}`;
+const mongoUri = `mongodb://${CONFIG.db_host}:${CONFIG.db_port}/${CONFIG.db_name}`;
 
 const { connection } = mongoose;
 

@@ -44,19 +44,8 @@ app.use(cors());
 // });
 
 // Router
-app.use('/v1', v1);
-
-app.route('/').all((req, res) => {
-  res.json({
-    status: 'success',
-    message: 'Hangar API root',
-    data: { version_number: 'v0.0.1' },
-  });
-});
-
-app.route('/fail').all(() => {
-  throw new Error();
-});
+app.use('/v1', v1); // Api routes
+app.use('/', express.static('/var/www/html/')); // web_root
 
 // catch 404 and forward to error handler
 app.use((req, res) => {
@@ -75,7 +64,6 @@ app.use((err, req, res, next) => {
     res.locals.error = {};
   }
 
-  console.log('handled');
   // log errors to file
   winston.error(
     `${err.status || 500} - ${err.message} - ${req.originalUrl} - ${

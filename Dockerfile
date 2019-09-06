@@ -13,9 +13,8 @@ RUN npm install
 
 COPY --chown=node:node . .
 
-EXPOSE 3000
-
 # This is needed to build the image but not otherwise.
+# EXPOSE 3000
 # CMD ["npm", "start"]
 
 # Useful for debugging to keep container running.

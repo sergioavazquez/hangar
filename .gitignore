@@ -6,4 +6,8 @@ database/mongo_db_test
 database/logs
 logs/nginx/*
 logs/nodejs/*
+ssl_cert/etc/*
+ssl_cert/var/*
+src/config/nginx/conf-https/nginx.https.conf
+src/config/nginx/conf-http/nginx.http.conf
 .DS_Store

@@ -1,0 +1,16 @@
+version: '3.5'
+
+services:
+
+  hangar_nginx:
+    ports:
+      - "80:4000"
+      - "443:443"
+
+    volumes:
+      - web-root:/var/www/html
+      - ./src/config/nginx/conf-https:/etc/nginx/conf.d
+      - ./logs/nginx:/var/log/nginx
+      - certbot-etc:/etc/letsencrypt
+      - certbot-var:/var/lib/letsencrypt
+      - dhparam:/etc/ssl/certs

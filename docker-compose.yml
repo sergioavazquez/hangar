@@ -5,7 +5,7 @@ services:
     container_name: hangar_server
     restart: always
     ports:
-      - "3000:3000"
+      - ${SERVER_PORT}:${SERVER_PORT}
     build:
       context: .
       dockerfile: Dockerfile
@@ -20,10 +20,11 @@ services:
     volumes:
       - .:/home/node/app
       - /home/node/app/node_modules
+      - web-root:/var/www/html
     depends_on: [hangar_db]
     links:
       - hangar_db
-    command: ./wait-for-it.sh hangar_db:27017 -- ${COMMAND_PARAMS}
+    command: ./utils/wait-for-it.sh hangar_db:27017 -- ${COMMAND_PARAMS}
 
   hangar_db:
     container_name: hangar_db
@@ -52,7 +53,7 @@ services:
       - hangar-network
     healthcheck:
       test: ["CMD", "nc", "-z", "localhost", "27017"]
-      timeout: 45s
+      timeout: 10s
       interval: 10s
       retries: 10
     command: "mongod --smallfiles"
@@ -63,28 +64,21 @@ services:
     restart: unless-stopped
     ports:
       - "80:4000"
+      #- "443:443"
+    environment:
+      - APP_DOMAIN=${APP_DOMAIN}
 
     volumes:
       - web-root:/var/www/html
-      - ./src/config/nginx/nginx-conf:/etc/nginx/conf.d
+      - ./src/config/nginx/conf-http:/etc/nginx/conf.d
       - ./logs/nginx:/var/log/nginx
       - certbot-etc:/etc/letsencrypt
       - certbot-var:/var/lib/letsencrypt
+      - dhparam:/etc/ssl/certs
 
     depends_on: [hangar_server]
     networks:
       - hangar-network
-
-  # certbot:
-  #   image: certbot/certbot
-  #   container_name: hangar_certbot
-  #   volumes:
-  #     - certbot-etc:/etc/letsencrypt
-  #     - certbot-var:/var/lib/letsencrypt
-  #     - web-root:/var/www/html
-  #   depends_on:
-  #     - hangar_nginx
-  #   command: certonly --webroot --webroot-path=/var/www/html --email sammy@example.com --agree-tos --no-eff-email --staging -d example.com  -d www.example.com 
 
 networks:
   hangar-network:
@@ -92,5 +86,26 @@ networks:
 
 volumes:
   certbot-etc:
+    driver: local
+    driver_opts:
+      type: none
+      device: $PWD/ssl_cert/etc
+      o: bind
   certbot-var:
+    driver: local
+    driver_opts:
+      type: none
+      device: $PWD/ssl_cert/var
+      o: bind
+  dhparam:
+    driver: local
+    driver_opts:
+      type: none
+      device: $PWD/ssl_cert/dhparam
+      o: bind
   web-root:
+    driver: local
+    driver_opts:
+      type: none
+      device: $PWD/web_root
+      o: bind

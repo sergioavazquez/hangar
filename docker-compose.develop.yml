@@ -5,7 +5,7 @@ services:
     container_name: hangar_server
     restart: always
     ports:
-      - "4000:3000"
+      - ${HANGAR_PORT}:${SERVER_PORT}
       - "9229:9229"
     build:
       context: .
@@ -20,10 +20,11 @@ services:
     volumes:
       - .:/home/node/app
       - /home/node/app/node_modules
+      - web-root:/var/www/html
     depends_on: [hangar_db]
     links:
       - hangar_db
-    command: ./wait-for-it.sh hangar_db:27017 -- ${COMMAND_PARAMS}
+    command: ./utils/wait-for-it.sh hangar_db:27017 -- ${COMMAND_PARAMS}
 
   hangar_db:
     container_name: hangar_db
@@ -62,6 +63,9 @@ networks:
     driver: bridge
 
 volumes:
-  certbot-etc:
-  certbot-var:
   web-root:
+    driver: local
+    driver_opts:
+      type: none
+      device: $PWD/web_root
+      o: bind

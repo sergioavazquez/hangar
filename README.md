@@ -1,21 +1,38 @@
 # Hangar
 
-This project provides a starting point for developing a backend API in NodeJS.
+This project provides a starting point for developing, testing and deploying a backend API in NodeJS.
 
 As an example a simple [CRUD](https://en.wikipedia.org/wiki/Create,_read,_update_and_delete) notes application is provided.
 
-The application integrates user management via [JWT](https://en.wikipedia.org/wiki/Create,_read,_update_and_delete), integration tests, logs, documentation, a development environment with linting and hot reload and a production environment.
-
 Stack consists of ExpressJS server with MongoDB as database.
 
+The application integrates user management via [JWT](https://en.wikipedia.org/wiki/Create,_read,_update_and_delete), integration tests, logs, working documentation, a development environment with linting and hot reload and an easily deployable production environment that includes HTTPS certificates.
 
 ## Getting Started
 
-Create a `.env` file using `example.env` as template.
+1- Update `app_definition.json`.
+This information is used by Open Api Documentation.
+
+```
+{
+  "name": "New App",
+  "version": "0.0.1",
+  "description": "Cool app",
+  "contact_email": "dev@gmail.com",
+  "license": "Apache 2.0",
+  "license_url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+}
+```
+
+2- Create a `.env` file using `example.env` as template.
 
 __.env variables:__
 
-`APP` Name of the app.
+`HANGAR_VERSION` Used internally. Don't worry.
+
+`APP_DOMAIN` Domain for the app, without `www`. e.g.: example.com
+
+`DOMAIN_EMAIL` Email provided to `Let's Encrypt` as contact for the domain.
 
 `SERVER_PORT` Express server port. Used internally. (default: 3000)
 
@@ -31,9 +48,7 @@ For security reasons a mongo admin user is created along with the database to ad
 
 `MONGO_ROOT_PASSWORD` mongo's admin pass.
 
-If working within docker container `DB_HOST` needs to be the same as docker-compose MongoDB service. By default it's `hangar_db`. (Check `docker-compose.yml` files. If you need to change the name keep in mind there are several docker-compose files depending on environment)
-
-If running outside docker, `DB_HOST` should be `localhost`.
+`DB_HOST` needs to be the same as docker-compose MongoDB service. By default it's `hangar_db`. (Check `docker-compose.yml` files. If you need to change the name keep in mind there are several docker-compose files depending on environment)
 
 Production db settings are:
 
@@ -67,7 +82,9 @@ The following fileds are self explanatory and are used to create a user when run
 
 `TEST_PASS` Test user password
 
-Remember changing `JWT_ENCRYPTION` string which is used as a secret by Passport to sign the JWT.
+_User authentication_
+
+`JWT_ENCRYPTION` string used as a secret to sign the JWT. It's important you change this.
 
 `JWT_EXPIRATION` expressed in seconds or a string describing a time span [zeit/ms](https://github.com/zeit/ms)
 
@@ -79,27 +96,21 @@ Remember changing `JWT_ENCRYPTION` string which is used as a secret by Passport 
 
 `AUTH_UNIQUE_KEY` is the unique field used for user registration.
 
+_Nginx configuration_
 
-## Usage without Docker
-```
-clone or fork repository
+`HTTPS_NGINX_TEMPLATE`, `HTTP_NGINX_TEMPLATE` Template configurations for nginx config file.
+This are the files you need to edit if you need to update `Nginx` configuration.
 
-cd path/to/repository/root
+`HTTPS_NGINX_OUTPUT`, `HTTP_NGINX_OUTPUT` Location of `Nginx` config files. Do not edit these directly as they'll be overriden.
 
-npm install
-```
+## Requirements
 
-For development run: `npm run dev`
+1 - [Install Docker](https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-on-ubuntu-18-04).
 
-It has linting and hot reload.
+2 - [Install Docker-compose](https://www.digitalocean.com/community/tutorials/how-to-install-docker-compose-on-ubuntu-18-04).
 
-For production: `npm start`
+## Installation
 
-
-
-## Usage with Docker
-
-Install [Docker](https://docs.docker.com/install/)
 ```
 clone or fork repository
 
@@ -114,24 +125,32 @@ After updating modules specify `no-cache` to force the entire build.
 docker-compose build --no-cache
 ```
 
-### run_docker
+In order to begin development:
+```
+./hangar.sh -dev
+```
 
-`run_docker` is a small bash script that allows you to execute a command as if you were inside the container.
+### hangar.sh
 
-There are predefined commands for development, debugging, testing and production listed below but you can also execute any other command on the shell such as `ls -la` to retrieve a list of
-container elements.
+`hangar.sh` is a small bash script that helps you run the project.
 
 Remember to take containers down after stopping them with `ctrl + C`, by running:
-
-`docker-compose down`
+```
+docker-compose down
+```
 
 If running into problems with previous containers clear docker after taking down all its running containers:
-
-`docker system prune`
+```
+docker system prune
+```
+Then clear volumes:
+```
+docker volume prune
+```
 
 ## Development
 
-For delopment run: `./run_docker.sh -dev`
+For delopment run: `./hangar.sh -dev`
 
 Development uses `docker-compose.develop.yml` which does not include `nginx` as a reverse proxy and uses `nodemon` and `ESlint` for hot reload and linting.
 It also attaches an inspector for debugging in Chrome.
@@ -139,15 +158,6 @@ It also attaches an inspector for debugging in Chrome.
 Containers used: `hangar_server`, `hangar_db`
 
 port exposed: 4000
-
-## Production
-
-Build for production: `./run_docker.sh -start`
-Production build uses `nginx` as a reverse proxy.
-
-Containers used: `hangar_server`, `hangar_db`, `hangar_nginx`.
-
-port exposed: 80
 
 ## Testing
 
@@ -159,11 +169,11 @@ Unit tests: `name.unit.test.js`
 
 __Running tests:__
 
-Run integration tests: `./run_docker.sh -test`
+Run integration tests: `./hangar.sh -test`
 
-Run unit tests: `./run_docker.sh -test_u`
+Run unit tests: `./hangar.sh -test_u`
 
-Run tests in debug mode: `./run_docker.sh -test_d`
+Run tests in debug mode: `./hangar.sh -test_d`
 
 _Runs tests with attached inspector for debugging_
 
@@ -176,23 +186,91 @@ When running integration tests, `docker-compose.test.yml` is used to setup mongo
 
 All tests run on `mongo_db_test` leaving production db untouched. `mongo_db_test` is dropped after test runs.
 
+## Production
+
+Production build uses `nginx` as a reverse proxy.
+
+Containers used: `hangar_server`, `hangar_db`, `hangar_nginx`.
+
+port exposed: 80
+
+If you need to edit http or https `Nginx` config files edit the templates, as actual `.conf` files are dynamically generated.
+
+```
+./src/config/nginx/template.nginx.http.conf
+./src/config/nginx/template.nginx.https.conf
+```
+
+For a quick start, there's an `HTTP` build:
+```
+./hangar.sh -start
+```
+or if you don't want it daemonized:
+```
+./hangar.sh --start
+```
+
+For final production environment run:
+
+```
+// Setup SSL Certificate first!! (read below)
+
+./hangar.sh -start-https
+```
+
+`hangar.sh` script will build an `nginx.http.conf` or `nginx.https.conf` respectively based on its template.
+
+If config has changed and you want to update it, delete the file or add a second paramter `-u`.
+
+```
+./hangar.sh [start] -u
+```
+(which forces hangar script to update nginx config file)
+
+__Generating SSL certificate:__
+
+1 - Configure desired domain and contact email in `.env`
+
+2 - Make sure your there's an `A RECORD` in your domains register panel pointing to the production server's `IP`. This should be obvious, but if the server cannot be reached by accessing the domain, `certbot` has no way of verifying domain's ownership and thus will not issue the certificate.
+
+3 - Run certbot in stage mode to check the configuration:
+```
+./hangar.sh --cert-stage
+```
+
+If everything's OK certbot will exit with code 0.
+
+4 - Run certbot to generate certificates:
+```
+./hangar.sh --cert-prod
+```
+Certificate will be located in: `ssl_cert/etc/live/`
+
+5 - Generate a `Diffie-Hellman` key used for [Perfect Forward Secrecy](https://en.wikipedia.org/wiki/Forward_secrecy).
+
+```
+sudo openssl dhparam -out ./ssl_cert/dhparam/dhparam-2048.pem 2048
+```
+It takes some time...
+
+6 - Done. Start the server
+```
+./hangar.sh -start-https
+```
+
+Certificate is provided by [Let's Encrypt](https://letsencrypt.org/)
+
 ## Logs
 
 `./logs` folder contains `nginx` and `nodejs` logs. There's no need to get inside containers.
 
 Log configuration is available in `./src/config/winston.js`
 
-## NGINX
-
-NGINX is used as a reverse proxy on production setup: `docker-compose.yml`
-
-Configuration file is available here: `./src/config/nginx/nginx.conf`
-
 ## Useful Info:
 
 __Debugging NodeJS Application__
 
-Run: `./run_docker.sh -dev`
+Run: `./hangar.sh -dev`
 
 Open Chrome and paste the web socket address exposed by the debugger:
 
@@ -211,15 +289,27 @@ __Debugging docker container__
 
 Containers execute and close. If a container execution fails it'll stop, and you can't get shell access to it for debugging.
 
-running: `./run_docker.sh -debug`
+running: 
+```
+./hangar.sh -debug
+```
 
-Will keep the container up so you can get access to it.
+Will keep `hangar_server` container up so you can get access to it.
 
-Open another console and run `docker exec -it <name> sh`
+```
+docker-compose exec <service_name> [command]
+
+// examples:
+
+docker-compose exec hangar_server ls /home
+
+docker-compose exec hangar_nginx ls -la /etc/letsencrypt/live
+```
+
 
 __Debugging MongoDB__
 
-`./run_docker.sh -debug` to initialize all containers.
+`./hangar.sh -debug` to initialize all containers.
 `docker exec -it database sh` will open a shell inside Mongo container.
 `mongo` to access mongo's shell.
 
@@ -308,7 +398,6 @@ This is how they look:
 
 ![hangar-docs](./docs/hangar-swagger-doc-example.png "Hangar docs")
 
-
 ## Technologies:
 - [NodeJS](https://nodejs.org/en/)
 - [ExpressJS](https://expressjs.com/)
@@ -326,3 +415,4 @@ This is how they look:
 - [Winston](https://github.com/winstonjs/winston)
 - [Swagger](https://swagger.io/)
 - [Nginx](https://www.nginx.com/)
+- [Certbot](https://certbot.eff.org/)
