@@ -1,7 +1,7 @@
 {
-  "name": "Hangar",
-  "version": "0.1.0",
-  "description": "",
+  "name": "hangar",
+  "version": "0.5.0",
+  "description": "Starting point for developing, testing and deploying a backend API in NodeJS.",
   "main": "app.js",
   "scripts": {
     "prestart": "eslint ./src --fix",
@@ -30,7 +30,7 @@
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
     "meeseeks-js": "^0.1.5",
-    "mongoose": "^5.6.10",
+    "mongoose": "^5.6.13",
     "mongoose-validator": "^2.1.0",
     "morgan": "^1.9.1",
     "passport": "^0.4.0",
@@ -41,16 +41,16 @@
     "winston": "^3.2.1"
   },
   "devDependencies": {
-    "eslint": "^6.2.1",
+    "eslint": "^6.3.0",
     "eslint-config-airbnb": "^18.0.1",
-    "eslint-config-prettier": "^6.1.0",
+    "eslint-config-prettier": "^6.2.0",
     "eslint-plugin-import": "^2.18.2",
-    "eslint-plugin-jest": "^22.15.2",
-    "eslint-plugin-node": "^9.1.0",
+    "eslint-plugin-jest": "^22.17.0",
+    "eslint-plugin-node": "^10.0.0",
     "eslint-plugin-prettier": "^3.1.0",
     "eslint-plugin-security": "^1.4.0",
     "jest": "^24.9.0",
-    "nodemon": "^1.19.1",
+    "nodemon": "^1.19.2",
     "prettier": "^1.18.2",
     "superagent": "^5.1.0",
     "supertest": "^4.0.2"
