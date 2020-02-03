@@ -8,7 +8,8 @@ Stack consists of ExpressJS server with MongoDB as database.
 
 The application integrates user management via [JWT](https://en.wikipedia.org/wiki/Create,_read,_update_and_delete), integration tests, logs, working documentation, a development environment with linting and hot reload and an easily deployable production environment that includes HTTPS certificates.
 
-## Getting Started
+
+# Getting Started
 
 1- Update `app_definition.json`.
 This information is used by Open Api Documentation.
@@ -103,13 +104,13 @@ This are the files you need to edit if you need to update `Nginx` configuration.
 
 `HTTPS_NGINX_OUTPUT`, `HTTP_NGINX_OUTPUT` Location of `Nginx` config files. Do not edit these directly as they'll be overriden.
 
-## Requirements
+# Requirements
 
 1 - [Install Docker](https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-on-ubuntu-18-04).
 
 2 - [Install Docker-compose](https://www.digitalocean.com/community/tutorials/how-to-install-docker-compose-on-ubuntu-18-04).
 
-## Installation
+# Installation
 
 ```
 clone or fork repository
@@ -148,7 +149,7 @@ Then clear volumes:
 docker volume prune
 ```
 
-## Development
+# Development
 
 For delopment run: `./hangar.sh -dev`
 
@@ -159,7 +160,7 @@ Containers used: `hangar_server`, `hangar_db`
 
 port exposed: 4000
 
-## Testing
+# Testing
 
 All tests should be in `./src/tests` folder and follow this naming convention:
 
@@ -186,7 +187,7 @@ When running integration tests, `docker-compose.test.yml` is used to setup mongo
 
 All tests run on `mongo_db_test` leaving production db untouched. `mongo_db_test` is dropped after test runs.
 
-## Production
+# Production
 
 Production build uses `nginx` as a reverse proxy.
 
@@ -260,13 +261,13 @@ It takes some time...
 
 Certificate is provided by [Let's Encrypt](https://letsencrypt.org/)
 
-## Logs
+# Logs
 
 `./logs` folder contains `nginx` and `nodejs` logs. There's no need to get inside containers.
 
 Log configuration is available in `./src/config/winston.js`
 
-## Useful Info:
+# Useful Info:
 
 __Debugging NodeJS Application__
 
@@ -347,7 +348,7 @@ ssh -o ServerAliveInterval=60 -R example:80:localhost:4000 serveo.net
 This will forward incoming requests to `https://example.serveo.net` (port 80) to `localhost:4000`.
 
 
-## Documentation
+# Documentation
 
 __Basic API Docs__
 
@@ -398,7 +399,13 @@ This is how they look:
 
 ![hangar-docs](./docs/hangar-swagger-doc-example.png "Hangar docs")
 
-## Technologies:
+# Current versions:
+__Node.js:__ `12.14.1 LTS`
+
+__MongoDB:__ `4.2`
+#
+
+# Technologies:
 - [NodeJS](https://nodejs.org/en/)
 - [ExpressJS](https://expressjs.com/)
 - [Nodemon](https://nodemon.io/)

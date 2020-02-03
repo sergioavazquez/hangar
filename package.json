@@ -1,6 +1,6 @@
 {
   "name": "hangar",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "description": "Starting point for developing, testing and deploying a backend API in NodeJS.",
   "main": "app.js",
   "scripts": {

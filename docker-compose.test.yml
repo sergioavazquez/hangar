@@ -5,4 +5,4 @@ services:
     restart: "no"
   hangar_db:
     restart: "no"
-    command: "mongod --dbpath /test/db --smallfiles"
+    command: "mongod --dbpath /test/db"
