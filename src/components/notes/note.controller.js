@@ -2,7 +2,7 @@ const { to } = require('meeseeks-js');
 const Note = require('./note.model');
 const { eRe, sRe } = require('../../utils/util.service');
 
-const create = async function(req, res) {
+const create = async function (req, res) {
   res.setHeader('Content-Type', 'application/json');
   const { user } = req;
 
@@ -16,27 +16,27 @@ const create = async function(req, res) {
 };
 module.exports.create = create;
 
-const getAll = async function(req, res) {
+const getAll = async function (req, res) {
   res.setHeader('Content-Type', 'application/json');
   const { user } = req;
 
   const [err, notes] = await to(Note.find({ 'users.user': user._id }));
   if (err) return eRe(res, err, 422);
 
-  const notesJson = notes.map(note => note.toWeb());
+  const notesJson = notes.map((note) => note.toWeb());
 
   return sRe(res, { notes: notesJson });
 };
 module.exports.getAll = getAll;
 
-const get = function(req, res) {
+const get = function (req, res) {
   res.setHeader('Content-Type', 'application/json');
   const { note } = req;
   return sRe(res, { note: note.toWeb() });
 };
 module.exports.get = get;
 
-const update = async function(req, res) {
+const update = async function (req, res) {
   res.setHeader('Content-Type', 'application/json');
   const { body, note } = req;
   note.set(body);
@@ -49,7 +49,7 @@ const update = async function(req, res) {
 };
 module.exports.update = update;
 
-const remove = async function(req, res) {
+const remove = async function (req, res) {
   res.setHeader('Content-Type', 'application/json');
   const { note } = req;
 

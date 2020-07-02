@@ -3,7 +3,7 @@ const { to } = require('meeseeks-js');
 const authService = require('./auth.service');
 const { eRe, sRe } = require('../../utils/util.service');
 
-const create = async function(req, res) {
+const create = async function (req, res) {
   res.setHeader('Content-Type', 'application/json');
   const { body } = req;
 
@@ -27,7 +27,7 @@ const create = async function(req, res) {
 };
 module.exports.create = create;
 
-const get = async function(req, res) {
+const get = async function (req, res) {
   res.setHeader('Content-Type', 'application/json');
   const { user } = req;
 
@@ -49,7 +49,7 @@ module.exports.get = get;
 // };
 // module.exports.get = get;
 
-const update = async function(req, res) {
+const update = async function (req, res) {
   let error;
   const { user, body } = req;
   user.set(body);
@@ -72,7 +72,7 @@ const update = async function(req, res) {
 };
 module.exports.update = update;
 
-const remove = async function(req, res) {
+const remove = async function (req, res) {
   const { user } = req;
   const [err] = await to(user.remove());
   if (err) return eRe(res, 'An error occured trying to delete user');
@@ -81,7 +81,7 @@ const remove = async function(req, res) {
 };
 module.exports.remove = remove;
 
-const login = async function(req, res) {
+const login = async function (req, res) {
   const { body } = req;
 
   const [err, user] = await to(authService.authUser(body));

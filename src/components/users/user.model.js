@@ -56,7 +56,7 @@ UserSchema.virtual('notes', {
 UserSchema.set('toJSON', { virtuals: true });
 UserSchema.set('toObject', { virtuals: true });
 
-UserSchema.pre('save', async function(next) {
+UserSchema.pre('save', async function (next) {
   let result;
   if (this.isModified('password') || this.isNew) {
     const [err, salt] = await to(bcrypt.genSalt(10));
@@ -72,7 +72,7 @@ UserSchema.pre('save', async function(next) {
   return result;
 });
 
-UserSchema.methods.comparePassword = async function(pw) {
+UserSchema.methods.comparePassword = async function (pw) {
   if (!this.password) tErr('password not set');
 
   const [err, pass] = await to(bcryptP.compare(pw, this.password));
@@ -83,7 +83,7 @@ UserSchema.methods.comparePassword = async function(pw) {
   return this;
 };
 
-UserSchema.virtual('full_name').get(function() {
+UserSchema.virtual('full_name').get(function () {
   // now you can treat as if this was a property instead of a function
   if (!this.first) return null;
   if (!this.last) return this.first;
@@ -91,7 +91,7 @@ UserSchema.virtual('full_name').get(function() {
   return `${this.first} ${this.last}`;
 });
 
-UserSchema.methods.getJWT = function() {
+UserSchema.methods.getJWT = function () {
   let expirationTime = 10000; // default in seconds
   if (typeof CONFIG.jwt_expiration === 'number') {
     expirationTime = parseInt(CONFIG.jwt_expiration, 10);
@@ -105,7 +105,7 @@ UserSchema.methods.getJWT = function() {
   return `Bearer ${token}`;
 };
 
-UserSchema.methods.toWeb = function() {
+UserSchema.methods.toWeb = function () {
   const json = this.toJSON();
   delete json.password;
   return json;

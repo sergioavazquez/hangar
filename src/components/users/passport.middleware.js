@@ -3,7 +3,7 @@ const { to } = require('meeseeks-js');
 const User = require('./user.model');
 const CONFIG = require('../../config/config');
 
-module.exports = function(passport) {
+module.exports = function (passport) {
   const opts = {};
   opts.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
   opts.secretOrKey = CONFIG.jwt_encryption;

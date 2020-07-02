@@ -14,7 +14,7 @@ const NoteSchema = mongoose.Schema(
   { timestamps: true }
 );
 
-NoteSchema.methods.toWeb = function() {
+NoteSchema.methods.toWeb = function () {
   const json = this.toJSON();
   return json;
 };

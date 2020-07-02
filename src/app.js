@@ -77,12 +77,12 @@ app.use((err, req, res, next) => {
   next(err);
 });
 
-process.on('unhandledRejection', error => {
+process.on('unhandledRejection', (error) => {
   console.log('unhandled rej');
   throw new Error(error);
 });
 
-process.on('uncaughtException', error => {
+process.on('uncaughtException', (error) => {
   console.log('unhandled err');
   // errorManagement.handler.handleError(error);
   // if(!errorManagement.handler.isTrustedError(error))

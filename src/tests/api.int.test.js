@@ -6,11 +6,11 @@ const db = container.resolve('db');
 const store = container.resolve('store');
 const CONFIG = container.resolve('config');
 
-const parseResponse = response => JSON.parse(response.res.text);
+const parseResponse = (response) => JSON.parse(response.res.text);
 
 beforeAll(() => db.connect().then(() => db.connection.dropDatabase()));
 
-afterAll(done => {
+afterAll((done) => {
   db.connection.dropDatabase().then(() => {
     db.disconnect();
     done();
@@ -18,13 +18,13 @@ afterAll(done => {
 });
 
 describe('User', () => {
-  test('Root shallow test', async done => {
+  test('Root shallow test', async (done) => {
     const response = await request(app).get('/');
     expect(response.statusCode).toBe(200);
     done();
   });
 
-  test('It should fail to fetch without auth', async done => {
+  test('It should fail to fetch without auth', async (done) => {
     const response = await request(app)
       .get('/v1/users/')
       .set('Accept', 'application/json');
@@ -33,7 +33,7 @@ describe('User', () => {
     done();
   });
 
-  test('It should create a user', async done => {
+  test('It should create a user', async (done) => {
     const response = await request(app)
       .post('/v1/users/')
       .set('Accept', 'application/json')
@@ -50,7 +50,7 @@ describe('User', () => {
     done();
   });
 
-  test('It should create a second user', async done => {
+  test('It should create a second user', async (done) => {
     const response = await request(app)
       .post('/v1/users/')
       .set('Accept', 'application/json')
@@ -65,7 +65,7 @@ describe('User', () => {
     done();
   });
 
-  test('It should login second user', async done => {
+  test('It should login second user', async (done) => {
     const response = await request(app)
       .post('/v1/users/login/')
       .set('Accept', 'application/json')
@@ -80,7 +80,7 @@ describe('User', () => {
     done();
   });
 
-  test('It should fail to create user with same email', async done => {
+  test('It should fail to create user with same email', async (done) => {
     const response = await request(app)
       .post('/v1/users/')
       .set('Accept', 'application/json')
@@ -95,7 +95,7 @@ describe('User', () => {
     done();
   });
 
-  test('It should update user', async done => {
+  test('It should update user', async (done) => {
     const response = await request(app)
       .put('/v1/users/')
       .set('Accept', 'application/json')
@@ -112,7 +112,7 @@ describe('User', () => {
     done();
   });
 
-  test('It should fetch previously updated user', async done => {
+  test('It should fetch previously updated user', async (done) => {
     const response = await request(app)
       .get('/v1/users/')
       .set('Accept', 'application/json')
@@ -125,7 +125,7 @@ describe('User', () => {
 });
 
 describe('Note tests', () => {
-  test('Create user1 note', async done => {
+  test('Create user1 note', async (done) => {
     const response = await request(app)
       .post('/v1/notes/')
       .set('Accept', 'application/json')
@@ -140,7 +140,7 @@ describe('Note tests', () => {
     done();
   });
 
-  test('Create user2 note', async done => {
+  test('Create user2 note', async (done) => {
     const response = await request(app)
       .post('/v1/notes/')
       .set('Accept', 'application/json')
@@ -155,7 +155,7 @@ describe('Note tests', () => {
     done();
   });
 
-  test('Update note', async done => {
+  test('Update note', async (done) => {
     const response = await request(app)
       .put(`/v1/notes/${store.getByKey('noteId')}`)
       .set('Accept', 'application/json')
@@ -169,7 +169,7 @@ describe('Note tests', () => {
     done();
   });
 
-  test('It should verify previous note was updated', async done => {
+  test('It should verify previous note was updated', async (done) => {
     const response = await request(app)
       .get(`/v1/notes/${store.getByKey('noteId')}`)
       .set('Accept', 'application/json')
@@ -180,7 +180,7 @@ describe('Note tests', () => {
     done();
   });
 
-  test('It fail to fetch user2 note', async done => {
+  test('It fail to fetch user2 note', async (done) => {
     const response = await request(app)
       .get(`/v1/notes/${store.getByKey('noteId_user2')}`)
       .set('Accept', 'application/json')

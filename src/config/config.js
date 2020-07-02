@@ -4,7 +4,7 @@ const APP_CONFIG = require('../../app_definition.json');
 const CONFIG = {}; // Make this global to use all over the application
 
 CONFIG.app_definition = APP_CONFIG || {};
-CONFIG.getApp = setting => {
+CONFIG.getApp = (setting) => {
   // eslint-disable-next-line
   return CONFIG.app_definition[setting] || "Missing app_definition";
 };

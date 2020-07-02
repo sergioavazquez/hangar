@@ -18,7 +18,7 @@ const cColors = {
 };
 module.exports.cColors = cColors;
 
-module.exports.eRe = function(res, err, code) {
+module.exports.eRe = function (res, err, code) {
   // Error Web Response
   let error = err;
   if (typeof err === 'object' && typeof err.message !== 'undefined') {
@@ -30,7 +30,7 @@ module.exports.eRe = function(res, err, code) {
   return res.json({ success: false, error });
 };
 
-module.exports.sRe = function(res, data, code) {
+module.exports.sRe = function (res, data, code) {
   // Success Web Response
   let sendData = { success: true };
 
@@ -43,7 +43,7 @@ module.exports.sRe = function(res, data, code) {
   return res.json(sendData);
 };
 
-module.exports.tErr = function(errMessage, log) {
+module.exports.tErr = function (errMessage, log) {
   // tErr stands for Throw Error
   if (log === true) {
     console.error(errMessage);

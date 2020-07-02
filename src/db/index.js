@@ -19,7 +19,7 @@ const options = {
 };
 
 const connect = () =>
-  mongoose.connect(mongoUri, options).catch(err => {
+  mongoose.connect(mongoUri, options).catch((err) => {
     console.log(
       cColors.fgRed,
       `Can Not Connect to Mongo Server: ${mongoUri}`,
@@ -29,7 +29,7 @@ const connect = () =>
   });
 
 const disconnect = () => {
-  mongoose.disconnect().catch(err => {
+  mongoose.disconnect().catch((err) => {
     console.log(cColors.fgRed, 'Mongo disconnect failed', cColors.reset);
     console.log(`Mongo connect error: ${err}`);
   });
@@ -66,7 +66,7 @@ connection.once('open', () => {
   );
 });
 
-connection.on('error', error => {
+connection.on('error', (error) => {
   dbErrorHandler(error, connect);
 });
 

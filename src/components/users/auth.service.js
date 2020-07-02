@@ -4,7 +4,7 @@ const User = require('./user.model');
 const { tErr } = require('../../utils/util.service');
 const CONFIG = require('../../config/config');
 
-const getUniqueKeyFromBody = function(body) {
+const getUniqueKeyFromBody = function (body) {
   const authUniqueKey = CONFIG.auth_unique_key;
   let uniqueKey;
   if (body) {
@@ -16,7 +16,7 @@ const getUniqueKeyFromBody = function(body) {
 };
 module.exports.getUniqueKeyFromBody = getUniqueKeyFromBody;
 
-const createUser = async function(userInfo) {
+const createUser = async function (userInfo) {
   const authInfo = {};
   authInfo.status = 'create';
   authInfo.method = CONFIG.auth_unique_key;
@@ -39,7 +39,7 @@ const createUser = async function(userInfo) {
 };
 module.exports.createUser = createUser;
 
-const authUser = async function(userInfo) {
+const authUser = async function (userInfo) {
   // returns token
   const authInfo = {};
   authInfo.status = 'login';
