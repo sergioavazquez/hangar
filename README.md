@@ -106,9 +106,14 @@ This are the files you need to edit if you need to update `Nginx` configuration.
 
 # Requirements
 
-1 - [Install Docker](https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-on-ubuntu-18-04).
+1 - Ubuntu 18.04 [Install Docker](https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-on-ubuntu-18-04).
 
-2 - [Install Docker-compose](https://www.digitalocean.com/community/tutorials/how-to-install-docker-compose-on-ubuntu-18-04).
+1 - Ubuntu 20.04 [Install Docker](https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-on-ubuntu-20-04).
+
+
+2 - Ubuntu 18.04 [Install Docker-compose](https://www.digitalocean.com/community/tutorials/how-to-install-docker-compose-on-ubuntu-18-04).
+
+2 - Ubuntu 20.04 [Install Docker-compose](https://www.digitalocean.com/community/tutorials/how-to-install-and-use-docker-compose-on-ubuntu-20-04).
 
 # Installation
 
@@ -307,6 +312,9 @@ docker-compose exec hangar_server ls /home
 docker-compose exec hangar_nginx ls -la /etc/letsencrypt/live
 ```
 
+You can also open a shell inside a container:
+
+`docker exec -it <service_name> sh`
 
 __Debugging MongoDB__
 
@@ -347,6 +355,23 @@ ssh -o ServerAliveInterval=60 -R example:80:localhost:4000 serveo.net
 
 This will forward incoming requests to `https://example.serveo.net` (port 80) to `localhost:4000`.
 
+__./hangar.sh -test fails on linux__
+
+This is due to lack of permissions on the test folder.
+First verify permissions by:
+
+(From project's root)
+```
+ls -la database
+```
+
+After running dev/start database ownership on `database/mongo_db` changes.
+In this case, a group is assigned: `systemd-coredump`
+For some reason this does not happen on `database/mongo_db_test` so we need to do it manually:
+
+```
+sudo chown -R systemd-coredump:<your_user> database/mongo_db_test
+```
 
 # Documentation
 

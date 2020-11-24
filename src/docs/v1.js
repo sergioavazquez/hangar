@@ -70,10 +70,10 @@ const docs = () => {
             },
           },
           responses: {
-            '201': {
+            201: {
               $ref: '#/components/responses/Created',
             },
-            '401': {
+            401: {
               $ref: '#/components/responses/Unauthorized',
             },
           },
@@ -91,10 +91,10 @@ const docs = () => {
           consumes: ['application/json'],
           produces: ['application/json'],
           responses: {
-            '401': {
+            401: {
               $ref: '#/components/responses/Unauthorized',
             },
-            '200': {
+            200: {
               description: 'Success',
             },
           },
@@ -124,16 +124,16 @@ const docs = () => {
             },
           ],
           responses: {
-            '200': {
+            200: {
               description: 'successful operation',
               schema: {
                 $ref: '#/components/schemas/Note',
               },
             },
-            '401': {
+            401: {
               $ref: '#/components/responses/Unauthorized',
             },
-            '404': {
+            404: {
               description: 'Note not found',
             },
           },
@@ -161,16 +161,16 @@ const docs = () => {
             },
           ],
           responses: {
-            '200': {
+            200: {
               description: 'successful operation',
               schema: {
                 $ref: '#/components/schemas/Note',
               },
             },
-            '401': {
+            401: {
               $ref: '#/components/responses/Unauthorized',
             },
-            '404': {
+            404: {
               description: 'Note not found',
             },
           },
@@ -198,13 +198,13 @@ const docs = () => {
             },
           ],
           responses: {
-            '204': {
+            204: {
               $ref: '#/components/responses/NoContent',
             },
-            '401': {
+            401: {
               $ref: '#/components/responses/Unauthorized',
             },
-            '404': {
+            404: {
               description: 'Note not found',
             },
           },
@@ -239,7 +239,7 @@ const docs = () => {
             },
           },
           responses: {
-            '201': {
+            201: {
               $ref: '#/components/responses/Created',
               content: {
                 schema: {
@@ -259,7 +259,7 @@ const docs = () => {
                 },
               },
             },
-            '422': {
+            422: {
               $ref: '#/components/responses/Unprocessable',
             },
           },
@@ -271,13 +271,13 @@ const docs = () => {
           operationId: 'fetchUser',
           produces: ['application/json'],
           responses: {
-            '200': {
+            200: {
               description: 'successful operation',
               schema: {
                 $ref: '#/components/schemas/User',
               },
             },
-            '401': {
+            401: {
               $ref: '#/components/responses/Unauthorized',
             },
           },
@@ -311,16 +311,16 @@ const docs = () => {
             },
           },
           responses: {
-            '200': {
+            200: {
               description: 'Successful response',
               schema: {
                 $ref: '#/components/schemas/User',
               },
             },
-            '422': {
+            422: {
               $ref: '#/components/responses/Unprocessable',
             },
-            '401': {
+            401: {
               $ref: '#/components/responses/Unauthorized',
             },
           },
@@ -337,13 +337,13 @@ const docs = () => {
           operationId: 'deleteUser',
           produces: ['application/json'],
           responses: {
-            '400': {
+            400: {
               description: 'Something went wrong.',
             },
-            '401': {
+            401: {
               $ref: '#/components/responses/Unauthorized',
             },
-            '204': {
+            204: {
               $ref: '#/components/responses/NoContent',
             },
           },
@@ -376,7 +376,7 @@ const docs = () => {
             },
           },
           responses: {
-            '200': {
+            200: {
               description: 'successful operation',
               schema: {
                 type: 'string',
@@ -392,7 +392,7 @@ const docs = () => {
                 },
               },
             },
-            '422': {
+            422: {
               description: 'Failed operation.',
             },
           },

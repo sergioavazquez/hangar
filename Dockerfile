@@ -1,5 +1,5 @@
 # Initial docker image
-FROM node:12.14.1
+FROM node:12.19.1
 # Set node as user and group for the app
 RUN mkdir -p /home/node/app/node_modules && chown -R node:node /home/node/app
 
