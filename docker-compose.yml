@@ -28,7 +28,7 @@ services:
 
   hangar_db:
     container_name: hangar_db
-    image: mongo:4.2
+    image: mongo:4.4
     environment:
       - MONGO_INITDB_ROOT_USERNAME=${MONGO_ROOT_USERNAME}
       - MONGO_INITDB_ROOT_PASSWORD=${MONGO_ROOT_PASSWORD}
