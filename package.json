@@ -28,7 +28,7 @@
     "debug": "^4.3.1",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
-    "jsonwebtoken": "^8.5.1",
+    "jsonwebtoken": "^9.0.0",
     "meeseeks-js": "^0.3.0",
     "mongoose": "^5.10.15",
     "mongoose-validator": "^2.1.0",
